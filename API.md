@@ -12,8 +12,8 @@ Toutes les routes protégées nécessitent le header :
 
 | Method | Route | Auth | Description |
 |--------|-------|------|-------------|
-| POST | /api/auth/register | ❌ | Créer un compte |
-| POST | /api/auth/login | ❌ | Connexion |
+| POST | /api/auth/register | ✅ | Créer un compte |
+| POST | /api/auth/login | ✅ | Connexion |
 | GET | /api/auth/me | ✅ | Profil connecté |
 | PUT | /api/auth/me | ✅ | Modifier profil |
 | PUT | /api/auth/change-password | ✅ | Changer mot de passe |
@@ -51,7 +51,7 @@ Toutes les routes protégées nécessitent le header :
 |--------|-------|------|-------------|
 | GET | /api/events/:eventId/promos | ✅ | Liste promos |
 | POST | /api/events/:eventId/promos | ✅ | Créer promo |
-| POST | /api/events/:eventId/promos/verify | ❌ | Vérifier code |
+| POST | /api/events/:eventId/promos/verify | ✅ | Vérifier code |
 | PATCH | /api/events/:eventId/promos/:id/toggle | ✅ | Activer/désactiver |
 | DELETE | /api/events/:eventId/promos/:id | ✅ | Supprimer |
 
@@ -61,7 +61,7 @@ Toutes les routes protégées nécessitent le header :
 
 | Method | Route | Auth | Description |
 |--------|-------|------|-------------|
-| POST | /api/events/:eventId/registrations | ❌ | S'inscrire |
+| POST | /api/events/:eventId/registrations | ✅ | S'inscrire |
 | GET | /api/events/:eventId/registrations | ✅ | Liste participants |
 | GET | /api/events/:eventId/registrations/export | ✅ | Export CSV |
 | GET | /api/events/:eventId/registrations/:id | ✅ | Détail inscription |
@@ -74,7 +74,7 @@ Toutes les routes protégées nécessitent le header :
 
 | Method | Route | Auth | Description |
 |--------|-------|------|-------------|
-| POST | /api/checkin/scan | ❌ | Scanner un billet |
+| POST | /api/checkin/scan | ✅ | Scanner un billet |
 | GET | /api/checkin/:eventId/stats | ✅ | Stats temps réel |
 | GET | /api/checkin/:eventId/list | ✅ | Liste offline |
 

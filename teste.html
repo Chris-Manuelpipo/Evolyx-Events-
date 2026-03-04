@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolyx Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+:root{--p:#1a73e8;--pd:#1557b0;--pl:#e8f0fe;--s:#ea4335;--ok:#34a853;--w:#fbbc04;--bg:#f8f9fa;--surf:#fff;--s2:#f8f9fa;--s3:#f1f3f4;--tx:#202124;--tx2:#5f6368;--tx3:#9aa0a6;--bd:#e8eaed;--sh1:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);--sh2:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);--sh3:0 2px 6px rgba(60,64,67,.3),0 6px 20px 4px rgba(60,64,67,.15);--r:8px;--xl:24px;--f:'Google Sans',sans-serif;--fd:'Google Sans Display',sans-serif;--t:all .2s cubic-bezier(.4,0,.2,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--s2);color:var(--tx);font-size:14px;line-height:1.5;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+
+/* AUTH */
+.auth{position:fixed;inset:0;background:linear-gradient(135deg,#1a73e8,#0d47a1);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .3s}
+.auth.hide{opacity:0;pointer-events:none}
+.acard{background:var(--surf);border-radius:12px;padding:40px;width:420px;box-shadow:var(--sh3)}
+.alogo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
+.alogo-i{width:44px;height:44px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.alogo-i .mi{color:white;font-size:24px}
+.alogo-t{font-family:var(--fd);font-size:22px;font-weight:700}
+.atabs{display:flex;border:1px solid var(--bd);border-radius:var(--xl);overflow:hidden;margin-bottom:24px}
+.atab{flex:1;padding:10px;text-align:center;cursor:pointer;font-weight:500;font-size:13px;color:var(--tx2);transition:var(--t)}
+.atab.on{background:var(--p);color:white}
+.aerr{background:#fce8e6;color:#c5221f;padding:10px 14px;border-radius:var(--r);font-size:13px;margin-bottom:16px;display:none}
+.aerr.show{display:block}
+.aform{display:none}.aform.on{display:block}
+
+/* LAYOUT */
+.app{display:flex;height:100vh}
+.side{width:256px;background:var(--surf);border-right:1px solid var(--bd);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.slogo{display:flex;align-items:center;gap:10px;padding:16px 20px;height:64px;border-bottom:1px solid var(--bd)}
+.slogo-i{width:36px;height:36px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slogo-i .mi{color:white;font-size:20px}
+.sname{font-family:var(--fd);font-weight:700;font-size:15px;color:var(--tx)}
+.stag{font-size:11px;color:var(--tx3)}
+.ssec{padding:12px 0}
+.slbl{font-size:11px;font-weight:600;letter-spacing:.8px;color:var(--tx3);text-transform:uppercase;padding:8px 20px 4px}
+.nav{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;border-radius:0 24px 24px 0;margin-right:12px;transition:var(--t);color:var(--tx2);font-weight:500}
+.nav:hover{background:var(--s3);color:var(--tx)}
+.nav.on{background:var(--pl);color:var(--p)}
+.nav .mi{font-size:20px}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:64px;background:var(--surf);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:16px;flex-shrink:0}
+.ttl{font-family:var(--fd);font-size:20px;font-weight:500;flex:1}
+.ava{width:36px;height:36px;border-radius:50%;background:var(--p);color:white;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.ibtn{width:40px;height:40px;border-radius:50%;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx2);transition:var(--t)}
+.ibtn:hover{background:var(--s3)}
+.ibtn .mi{font-size:20px}
+.content{flex:1;overflow-y:auto;padding:24px}
+
+/* PAGES */
+.page{display:none}.page.on{display:block;animation:fi .2s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.ph h1{font-family:var(--fd);font-size:24px;font-weight:500}
+.ph p{color:var(--tx2);margin-top:2px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:0 24px;height:40px;border-radius:var(--xl);font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:var(--t);white-space:nowrap}
+.btn-p{background:var(--p);color:white}.btn-p:hover{background:var(--pd)}.btn-p:disabled{background:var(--tx3);cursor:not-allowed}
+.btn-o{background:none;color:var(--p);border:1px solid var(--bd)}.btn-o:hover{background:var(--pl)}
+.btn-t{background:none;color:var(--p);padding:0 12px}.btn-t:hover{background:var(--pl)}
+.btn-d{background:var(--s);color:white}
+.btn .mi{font-size:18px}
+.btn-sm{height:32px;padding:0 16px;font-size:13px}
+
+/* CARDS */
+.card{background:var(--surf);border-radius:12px;border:1px solid var(--bd);overflow:hidden;margin-bottom:16px}
+.card-h{padding:16px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.card-h h3{font-size:16px;font-weight:500}
+.card-b{padding:24px}
+.card-f{padding:12px 24px;border-top:1px solid var(--bd);background:var(--s2);display:flex;justify-content:flex-end;gap:8px}
+
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.sc{background:var(--surf);border:1px solid var(--bd);border-radius:12px;padding:20px;display:flex;align-items:flex-start;justify-content:space-between}
+.sc p{color:var(--tx2);font-size:13px;margin-bottom:6px}
+.sc h2{font-family:var(--fd);font-size:28px;font-weight:400}
+.sc small{color:var(--ok);font-size:12px}
+.si{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.si .mi{font-size:22px}
+.si.b{background:#e8f0fe;color:var(--p)}.si.g{background:#e6f4ea;color:var(--ok)}
+.si.y{background:#fef7e0;color:#f9ab00}.si.r{background:#fce8e6;color:var(--s)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+
+/* TABLES */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:12px 16px;color:var(--tx2);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);background:var(--s2);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--bd);transition:var(--t)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--s2)}
+tbody td{padding:14px 16px}
+
+/* BADGES */
+.b{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:500}
+.b-ok{background:#e6f4ea;color:#137333}.b-w{background:#fef7e0;color:#b06000}
+.b-e{background:#fce8e6;color:#c5221f}.b-i{background:#e8f0fe;color:#1557b0}
+.b-n{background:var(--s3);color:var(--tx2)}
+
+/* FORMS */
+.fg{margin-bottom:20px}
+.fl{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.fl span{color:var(--s)}
+.fc{width:100%;padding:10px 14px;border:1px solid var(--bd);border-radius:8px;font-family:var(--f);font-size:14px;color:var(--tx);background:var(--surf);outline:none;transition:var(--t)}
+.fc:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(26,115,232,.1)}
+.fc::placeholder{color:var(--tx3)}
+textarea.fc{resize:vertical;min-height:100px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fh{font-size:12px;color:var(--tx3);margin-top:4px}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(32,33,36,.6);display:flex;align-items:center;justify-content:center;z-index:1000;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s}
+.mo.open{opacity:1;pointer-events:all}
+.md{background:var(--surf);border-radius:12px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(16px) scale(.98);transition:transform .2s cubic-bezier(.4,0,.2,1);box-shadow:var(--sh3)}
+.mo.open .md{transform:none}
+.md-lg{max-width:720px}
+.mh{display:flex;align-items:center;padding:20px 24px;border-bottom:1px solid var(--bd)}
+.mh h3{font-size:18px;font-weight:500;flex:1}
+.mb{padding:24px}
+.mf{display:flex;justify-content:flex-end;gap:12px;padding:16px 24px;border-top:1px solid var(--bd)}
+
+/* EVENT CARDS */
+.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ec{background:var(--surf);border:1px solid var(--bd);border-radius:12px;overflow:hidden;transition:var(--t)}
+.ec:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.ecov{height:140px;display:flex;align-items:center;justify-content:center;position:relative}
+.ecov .mi{font-size:48px;opacity:.3;color:white}
+.ecb{padding:16px}
+.ect{font-weight:600;font-size:15px;margin-bottom:8px;line-height:1.3}
+.ecm{display:flex;flex-direction:column;gap:4px}
+.ecmi{display:flex;align-items:center;gap:6px;color:var(--tx2);font-size:12px}
+.ecmi .mi{font-size:14px}
+.ecf{padding:12px 16px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.ecs{text-align:center}
+.ecs strong{display:block;font-size:16px;font-weight:600}
+.ecs span{font-size:11px;color:var(--tx3)}
+
+/* CHIPS */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{display:inline-flex;align-items:center;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--surf);color:var(--tx2);transition:var(--t)}
+.chip:hover{background:var(--s3)}
+.chip.on{background:var(--pl);color:var(--p);border-color:var(--p)}
+
+/* PROGRESS */
+.prog{background:var(--s3);border-radius:4px;height:6px;overflow:hidden}
+.pb{height:100%;background:var(--p);border-radius:4px;transition:width .6s}
+.pb.g{background:var(--ok)}.pb.y{background:var(--w)}
+
+/* CHECKIN */
+.cr{padding:24px;border-radius:12px;text-align:center;display:none}
+.cr.v{background:#e6f4ea;border:2px solid var(--ok)}
+.cr.a{background:#fef7e0;border:2px solid var(--w)}
+.cr.i{background:#fce8e6;border:2px solid var(--s)}
+.cr .ri{font-size:56px;margin-bottom:12px}
+.cr h3{font-size:20px;font-weight:600;margin-bottom:4px}
+
+/* TOAST */
+.tc{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+.toast{display:flex;align-items:center;gap:12px;background:#323232;color:white;padding:12px 16px;border-radius:8px;font-size:14px;min-width:280px;box-shadow:var(--sh2);animation:si .3s ease}
+.toast.ok{background:#137333}.toast.err{background:#c5221f}.toast.w{background:#b06000}
+@keyframes si{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+
+/* SPINNER */
+.spin{width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:ro .7s linear infinite;flex-shrink:0}
+.spin.d{border-color:rgba(26,115,232,.2);border-top-color:var(--p)}
+@keyframes ro{to{transform:rotate(360deg)}}
+.ld{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--tx2);gap:12px}
+
+/* MISC */
+.divider{height:1px;background:var(--bd);margin:20px 0}
+.tm{color:var(--tx2)}.ts{font-size:12px}.fw5{font-weight:500}.fw6{font-weight:600}
+.mt4{margin-top:4px}.mt8{margin-top:8px}.mt16{margin-top:16px}.mb16{margin-bottom:16px}
+.fl2{display:flex}.flc{display:flex;align-items:center}.flb{display:flex;align-items:center;justify-content:space-between}
+.g8{gap:8px}.g12{gap:12px}.g16{gap:16px}
+.empty{text-align:center;padding:40px 20px;color:var(--tx2)}
+.empty .mi{font-size:48px;color:var(--tx3);margin-bottom:12px;display:block}
+.empty h3{font-size:16px;font-weight:500;margin-bottom:6px}
+.ac{display:flex;gap:4px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:160px;padding:0 20px;width:100%}
+.bar{flex:1;background:var(--p);border-radius:3px 3px 0 0;opacity:.7;min-height:4px}
+.bar:hover{opacity:1}
+.cs{background:#fef7e0;border:1px dashed var(--w);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:8px;color:#b06000;font-size:13px;font-weight:500;margin-bottom:16px}
+.al{display:flex;flex-direction:column}
+.ai{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--bd)}
+.ai:last-child{border-bottom:none}
+.ad{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.ac2 p{font-size:13px;line-height:1.4}
+.ac2 small{color:var(--tx3);font-size:12px}
+.tabs{display:flex;border-bottom:1px solid var(--bd);margin-bottom:24px}
+.tab{padding:12px 20px;cursor:pointer;font-size:14px;font-weight:500;color:var(--tx2);border-bottom:3px solid transparent;transition:var(--t);margin-bottom:-1px}
+.tab:hover{color:var(--p)}.tab.on{color:var(--p);border-bottom-color:var(--p)}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="auth" id="auth">
+  <div class="acard">
+    <div class="alogo">
+      <div class="alogo-i"><span class="mi material-icons-round">bolt</span></div>
+      <span class="alogo-t">Evolyx Events</span>
+    </div>
+    <div class="atabs">
+      <div class="atab on" onclick="atab('login')">Connexion</div>
+      <div class="atab" onclick="atab('register')">Créer un compte</div>
+    </div>
+    <div class="aerr" id="aerr"></div>
+
+    <div class="aform on" id="fl">
+      <div class="fg"><label class="fl">Email <span>*</span></label><input type="email" class="fc" id="le" placeholder="vous@exemple.com"></div>
+      <div class="fg"><label class="fl">Mot de passe <span>*</span></label><input type="password" class="fc" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"></div>
+      <button class="btn btn-p" style="width:100%" id="blg" onclick="login()">Se connecter</button>
+    </div>
+
+    <div class="aform" id="fr">
+      <div class="fr">
+        <div class="fg"><label class="fl">Nom <span>*</span></label><input type="text" class="fc" id="rn" placeholder="Jean Dupont"></div>
+        <div class="fg"><label class="fl">Organisation</label><input type="text" class="fc" id="ro" placeholder="Mon Asso"></div>
+      </div>
+      <div class="fg"><label class="fl">Email <span>*</span></label><input type="email" class="fc" id="re" placeholder="vous@exemple.com"></div>
+      <div class="fg"><label class="fl">Téléphone</label><input type="tel" class="fc" id="rph" placeholder="+237 6XX XXX XXX"></div>
+      <div class="fg"><label class="fl">Mot de passe <span>*</span></label><input type="password" class="fc" id="rp" placeholder="Min. 6 caractères"></div>
+      <button class="btn btn-p" style="width:100%" id="brg" onclick="register()">Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app">
+  <aside class="side">
+    <div class="slogo">
+      <div class="slogo-i"><span class="mi material-icons-round">bolt</span></div>
+      <div><div class="sname">Evolyx Events</div><div class="stag" id="sorg">—</div></div>
+    </div>
+    <div class="ssec">
+      <div class="nav on" onclick="go('dashboard')"><span class="mi material-icons-round">dashboard</span>Tableau de bord</div>
+      <div class="nav" onclick="go('events')"><span class="mi material-icons-round">event</span>Événements</div>
+      <div class="nav" onclick="go('participants')"><span class="mi material-icons-round">people</span>Participants</div>
+      <div class="nav" onclick="go('tickets')"><span class="mi material-icons-round">confirmation_number</span>Billetterie</div>
+      <div class="nav" onclick="go('checkin')"><span class="mi material-icons-round">qr_code_scanner</span>Check-in</div>
+    </div>
+    <div class="ssec">
+      <div class="slbl">Analyse</div>
+      <div class="nav" onclick="go('analytics')"><span class="mi material-icons-round">bar_chart</span>Analytics</div>
+      <div class="nav" onclick="go('promos')"><span class="mi material-icons-round">local_offer</span>Codes promo</div>
+    </div>
+    <div class="ssec" style="margin-top:auto">
+      <div class="slbl">Compte</div>
+      <div class="nav" onclick="go('settings')"><span class="mi material-icons-round">settings</span>Paramètres</div>
+      <div class="nav" onclick="logout()" style="color:var(--s)"><span class="mi material-icons-round">logout</span>Déconnexion</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <span class="ttl" id="ptitle">Tableau de bord</span>
+      <div class="ava" id="tava">?</div>
+    </header>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page on" id="page-dashboard">
+        <div class="ph">
+          <div><h1 id="dgreet">Bonjour 👋</h1><p>Vue d'ensemble de votre activité</p></div>
+          <button class="btn btn-p" onclick="om('mce')"><span class="mi material-icons-round">add</span>Nouvel événement</button>
+        </div>
+        <div class="sg" id="dstats"><div class="ld" style="grid-column:1/-1"><div class="spin d"></div>Chargement...</div></div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-h"><h3>Événements récents</h3><button class="btn btn-t btn-sm" onclick="go('events')">Voir tout</button></div>
+            <div class="tw"><table><thead><tr><th>Événement</th><th>Statut</th><th>Inscrits</th><th>Revenus</th></tr></thead><tbody id="devt"><tr><td colspan="4"><div class="ld"><div class="spin d"></div></div></td></tr></tbody></table></div>
+          </div>
+          <div class="card">
+            <div class="card-h"><h3>Activité récente</h3></div>
+            <div class="card-b" style="padding-top:12px" id="dact"><div class="ld"><div class="spin d"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h3>Inscriptions — 30 derniers jours</h3></div>
+          <div class="card-b"><div class="bars" id="cbars"></div></div>
+        </div>
+      </div>
+
+      <!-- EVENEMENTS -->
+      <div class="page" id="page-events">
+        <div class="ph">
+          <div><h1>Mes événements</h1><p id="evcnt">—</p></div>
+          <button class="btn btn-p" onclick="om('mce')"><span class="mi material-icons-round">add</span>Nouvel événement</button>
+        </div>
+        <div class="chips" id="evfilt">
+          <div class="chip on" onclick="fevt(this,'')">Tous</div>
+          <div class="chip" onclick="fevt(this,'PUBLISHED')">Publiés</div>
+          <div class="chip" onclick="fevt(this,'DRAFT')">Brouillons</div>
+          <div class="chip" onclick="fevt(this,'COMPLETED')">Terminés</div>
+        </div>
+        <div class="eg" id="evgrid"><div class="ld" style="grid-column:1/-1"><div class="spin d"></div>Chargement...</div></div>
+      </div>
+
+      <!-- PARTICIPANTS -->
+      <div class="page" id="page-participants">
+        <div class="ph">
+          <div><h1>Participants</h1><p id="pcnt">Sélectionnez un événement</p></div>
+          <div class="fl2 g8">
+            <button class="btn btn-o" id="bcsv" onclick="exportCSV()" disabled><span class="mi material-icons-round">download</span>Export CSV</button>
+            <button class="btn btn-p" onclick="om('map')"><span class="mi material-icons-round">person_add</span>Ajouter</button>
+          </div>
+        </div>
+        <div class="card mb16">
+          <div class="card-b" style="padding:16px">
+            <div class="flb g16">
+              <div class="fg" style="margin:0;flex:1"><label class="fl">Événement</label><select class="fc" id="pev" onchange="loadP()"><option value="">— Choisir —</option></select></div>
+              <div class="fg" style="margin:0;flex:1"><label class="fl">Rechercher</label><input type="text" class="fc" id="psrch" placeholder="Nom, email..." oninput="filterP()"></div>
+              <div class="fg" style="margin:0"><label class="fl">Statut</label><select class="fc" id="pst" onchange="loadP()"><option value="">Tous</option><option value="CONFIRMED">Confirmés</option><option value="PENDING">En attente</option><option value="MANUAL">Manuel</option></select></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tw"><table>
+            <thead><tr><th>Participant</th><th>Billet</th><th>Montant</th><th>Statut</th><th>Présence</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="ptbody"><tr><td colspan="7"><div class="empty"><span class="mi material-icons-round">people</span><h3>Sélectionnez un événement</h3></div></td></tr></tbody>
+          </table></div>
+          <div class="card-f" style="justify-content:space-between">
+            <span class="tm ts" id="ppinfo">—</span>
+            <div class="fl2 g8">
+              <button class="btn btn-o btn-sm" id="bpp" onclick="chgPg(-1)" disabled>Précédent</button>
+              <button class="btn btn-o btn-sm" id="bpn" onclick="chgPg(1)" disabled>Suivant</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BILLETTERIE -->
+      <div class="page" id="page-tickets">
+        <div class="ph">
+          <div><h1>Billetterie</h1><p>Types de billets par événement</p></div>
+          <button class="btn btn-p" onclick="om('mct')"><span class="mi material-icons-round">add</span>Nouveau type</button>
+        </div>
+        <div class="card mb16"><div class="card-b" style="padding:16px">
+          <div class="fg" style="margin:0;max-width:360px"><label class="fl">Événement</label><select class="fc" id="tev" onchange="loadT()"><option value="">— Choisir —</option></select></div>
+        </div></div>
+        <div class="card"><div class="tw"><table>
+          <thead><tr><th>Nom</th><th>Prix</th><th>Quantité</th><th>Vendus</th><th>Restants</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="ttbody"><tr><td colspan="7"><div class="empty"><span class="mi material-icons-round">confirmation_number</span><h3>Sélectionnez un événement</h3></div></td></tr></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- CHECKIN -->
+      <div class="page" id="page-checkin">
+        <div class="ph"><div><h1>Check-in</h1><p>Scanner et valider les billets à l'entrée</p></div></div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-h"><h3>Scanner un billet</h3></div>
+            <div class="card-b">
+              <div class="fg"><label class="fl">Événement</label><select class="fc" id="cev" onchange="loadCS()"><option value="">— Choisir —</option></select></div>
+              <div class="fg">
+                <label class="fl">Code billet</label>
+                <input type="text" class="fc" id="sci" placeholder="EVX-XXXXXXXXXX" style="font-family:monospace;font-size:16px;letter-spacing:2px;text-transform:uppercase" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')scan()">
+              </div>
+              <button class="btn btn-p" style="width:100%" id="bscan" onclick="scan()"><span class="mi material-icons-round">qr_code_scanner</span>Valider l'entrée</button>
+              <div class="divider"></div>
+              <div class="cr v" id="rv"><div class="ri">✅</div><h3 style="color:#137333">Entrée validée !</h3><p id="rvn" style="color:#137333"></p><p id="rvt" style="color:#137333;margin-top:4px"></p></div>
+              <div class="cr a" id="ra"><div class="ri">⚠️</div><h3 style="color:#b06000">Déjà scanné</h3><p id="rat" style="color:#b06000"></p></div>
+              <div class="cr i" id="ri"><div class="ri">❌</div><h3 style="color:#c5221f">Billet invalide</h3><p id="rim" style="color:#c5221f"></p></div>
+            </div>
+          </div>
+          <div>
+            <div class="card mb16">
+              <div class="card-h"><h3>Stats en temps réel</h3><span class="b b-ok" style="display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;background:var(--ok);border-radius:50%;display:inline-block"></span>Live</span></div>
+              <div class="card-b" id="cstats"><div class="empty" style="padding:20px"><span class="mi material-icons-round" style="font-size:32px">event_available</span><p>Sélectionnez un événement</p></div></div>
+            </div>
+            <div class="card">
+              <div class="card-h"><h3>Derniers scans</h3></div>
+              <div style="padding:0 16px" id="crec"><div class="empty" style="padding:20px"><p>Aucun scan récent</p></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="page" id="page-analytics">
+        <div class="ph">
+          <div><h1>Analytics</h1><p>Analyse détaillée de vos événements</p></div>
+          <select class="fc" style="width:240px" id="anev" onchange="loadA()"><option value="">Tous les événements</option></select>
+        </div>
+        <div id="ancon"><div class="cs"><span class="mi material-icons-round">info</span>Sélectionnez un événement pour voir les analytics détaillés</div></div>
+      </div>
+
+      <!-- CODES PROMO -->
+      <div class="page" id="page-promos">
+        <div class="ph">
+          <div><h1>Codes promo</h1><p>Gérez les réductions pour vos événements</p></div>
+          <button class="btn btn-p" onclick="om('mcp')"><span class="mi material-icons-round">add</span>Nouveau code</button>
+        </div>
+        <div class="card mb16"><div class="card-b" style="padding:16px">
+          <div class="fg" style="margin:0;max-width:360px"><label class="fl">Événement</label><select class="fc" id="prev" onchange="loadPR()"><option value="">— Choisir —</option></select></div>
+        </div></div>
+        <div class="card"><div class="tw"><table>
+          <thead><tr><th>Code</th><th>Réduction</th><th>Utilisations</th><th>Expiration</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="prtbody"><tr><td colspan="6"><div class="empty"><span class="mi material-icons-round">local_offer</span><h3>Sélectionnez un événement</h3></div></td></tr></tbody>
+        </table></div></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="ph"><div><h1>Paramètres</h1><p>Gérez votre compte</p></div></div>
+        <div class="tabs">
+          <div class="tab on" onclick="stab(this,'st-p')">Profil</div>
+          <div class="tab" onclick="stab(this,'st-o')">Organisation</div>
+          <div class="tab" onclick="stab(this,'st-s')">Sécurité</div>
+          <div class="tab" onclick="stab(this,'st-pay')">Paiements</div>
+        </div>
+        <div id="st-p">
+          <div class="card" style="max-width:600px">
+            <div class="card-h"><h3>Informations personnelles</h3></div>
+            <div class="card-b">
+              <div class="fg"><label class="fl">Nom complet</label><input type="text" class="fc" id="sn"></div>
+              <div class="fg"><label class="fl">Email</label><input type="email" class="fc" id="se" disabled style="background:var(--s2)"></div>
+              <div class="fg"><label class="fl">Téléphone (WhatsApp)</label><input type="tel" class="fc" id="sph"></div>
+              <div class="fr">
+                <div class="fg"><label class="fl">Devise</label><select class="fc" id="scu"><option value="XAF">XAF — Franc CFA (CEMAC)</option><option value="XOF">XOF — Franc CFA (UEMOA)</option><option value="EUR">EUR — Euro</option><option value="USD">USD — Dollar</option></select></div>
+                <div class="fg"><label class="fl">Fuseau horaire</label><select class="fc" id="stz"><option value="Africa/Douala">Africa/Douala (GMT+1)</option><option value="Africa/Abidjan">Africa/Abidjan (GMT+0)</option><option value="Africa/Dakar">Africa/Dakar (GMT+0)</option><option value="Europe/Paris">Europe/Paris (GMT+1)</option></select></div>
+              </div>
+            </div>
+            <div class="card-f"><button class="btn btn-p" onclick="saveP()">Enregistrer</button></div>
+          </div>
+        </div>
+        <div id="st-o" style="display:none">
+          <div class="card" style="max-width:600px">
+            <div class="card-h"><h3>Mon organisation</h3></div>
+            <div class="card-b">
+              <div class="fg"><label class="fl">Nom de l'organisation</label><input type="text" class="fc" id="son"></div>
+              <div class="fg"><label class="fl">Pays</label><select class="fc" id="sco"><option value="CM">🇨🇲 Cameroun</option><option value="CI">🇨🇮 Côte d'Ivoire</option><option value="SN">🇸🇳 Sénégal</option><option value="FR">🇫🇷 France</option></select></div>
+            </div>
+            <div class="card-f"><button class="btn btn-p" onclick="saveP()">Enregistrer</button></div>
+          </div>
+        </div>
+        <div id="st-s" style="display:none">
+          <div class="card" style="max-width:600px">
+            <div class="card-h"><h3>Changer le mot de passe</h3></div>
+            <div class="card-b">
+              <div class="fg"><label class="fl">Mot de passe actuel <span>*</span></label><input type="password" class="fc" id="pc"></div>
+              <div class="fg"><label class="fl">Nouveau <span>*</span></label><input type="password" class="fc" id="pn"></div>
+              <div class="fg"><label class="fl">Confirmer <span>*</span></label><input type="password" class="fc" id="pco"></div>
+            </div>
+            <div class="card-f"><button class="btn btn-p" onclick="chgPwd()">Mettre à jour</button></div>
+          </div>
+        </div>
+        <div id="st-pay" style="display:none">
+          <div class="cs"><span class="mi material-icons-round">info</span>Intégration Stripe &amp; CinetPay — Bientôt disponible</div>
+          <div class="card" style="max-width:600px">
+            <div class="card-h"><h3>Méthodes de paiement</h3></div>
+            <div class="card-b">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="flb" style="padding:16px;border:1px solid var(--bd);border-radius:8px">
+                  <div class="flc g12"><span style="font-size:24px">💳</span><div><div class="fw5">Stripe (carte bancaire)</div><div class="ts tm">Visa, Mastercard, etc.</div></div></div>
+                  <span class="b b-n">Bientôt disponible</span>
+                </div>
+                <div class="flb" style="padding:16px;border:1px solid var(--bd);border-radius:8px">
+                  <div class="flc g12"><span style="font-size:24px">📱</span><div><div class="fw5">CinetPay (Mobile Money)</div><div class="ts tm">MTN MoMo, Orange Money</div></div></div>
+                  <span class="b b-n">Bientôt disponible</span>
+                </div>
+                <div class="flb" style="padding:16px;border:1px dashed var(--bd);border-radius:8px;background:var(--s2)">
+                  <div class="flc g12"><span style="font-size:24px">✋</span><div><div class="fw5">Paiement manuel</div><div class="ts tm">Cash, virement, confirmation manuelle</div></div></div>
+                  <span class="b b-ok">Disponible</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Créer événement -->
+<div class="mo" id="mce">
+  <div class="md md-lg">
+    <div class="mh"><h3>Créer un événement</h3><button class="ibtn" onclick="cm('mce')"><span class="mi material-icons-round">close</span></button></div>
+    <div class="mb">
+      <div class="fg"><label class="fl">Titre <span>*</span></label><input type="text" class="fc" id="et" placeholder="Ex: Gala Annuel 2025"></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fc" id="ed" placeholder="Décrivez votre événement..."></textarea></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Date de début <span>*</span></label><input type="datetime-local" class="fc" id="es"></div>
+        <div class="fg"><label class="fl">Date de fin <span>*</span></label><input type="datetime-local" class="fc" id="ee"></div>
+      </div>
+      <div class="fg"><label class="fl">Type de lieu</label><select class="fc" id="elt"><option value="PHYSICAL">Physique</option><option value="ONLINE">En ligne</option><option value="HYBRID">Hybride</option></select></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Adresse</label><input type="text" class="fc" id="ea" placeholder="Palais des Congrès"></div>
+        <div class="fg"><label class="fl">Quartier / Repère</label><input type="text" class="fc" id="edi" placeholder="Tsinga, face au ministère..."></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Ville</label><input type="text" class="fc" id="eci" placeholder="Yaoundé"></div>
+        <div class="fg"><label class="fl">Capacité maximale</label><input type="number" class="fc" id="ecap" placeholder="Illimitée"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="cm('mce')">Annuler</button>
+      <button class="btn btn-p" id="bcre" onclick="createEv()">Créer l'événement</button>
+    </div>
+  </div>
+</div>
+
+<!-- Créer billet -->
+<div class="mo" id="mct">
+  <div class="md">
+    <div class="mh"><h3>Nouveau type de billet</h3><button class="ibtn" onclick="cm('mct')"><span class="mi material-icons-round">close</span></button></div>
+    <div class="mb">
+      <div class="fg"><label class="fl">Événement <span>*</span></label><select class="fc" id="teid" onchange="loadT()"></select></div>
+      <div class="fg"><label class="fl">Nom <span>*</span></label><input type="text" class="fc" id="tn" placeholder="Entrée générale, VIP..."></div>
+      <div class="fg"><label class="fl">Description</label><input type="text" class="fc" id="tds" placeholder="Accès salle principale..."></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Prix <span>*</span></label><input type="number" class="fc" id="tp" placeholder="0 = gratuit" min="0"></div>
+        <div class="fg"><label class="fl">Quantité</label><input type="number" class="fc" id="tq" placeholder="Vide = illimité" min="1"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="cm('mct')">Annuler</button>
+      <button class="btn btn-p" id="bct" onclick="createT()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Créer promo -->
+<div class="mo" id="mcp">
+  <div class="md">
+    <div class="mh"><h3>Nouveau code promo</h3><button class="ibtn" onclick="cm('mcp')"><span class="mi material-icons-round">close</span></button></div>
+    <div class="mb">
+      <div class="fg"><label class="fl">Événement <span>*</span></label><select class="fc" id="peid"></select></div>
+      <div class="fg"><label class="fl">Code <span>*</span></label><input type="text" class="fc" id="pc2" placeholder="EARLY20" style="text-transform:uppercase;font-family:monospace" oninput="this.value=this.value.toUpperCase()"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Type</label><select class="fc" id="ptype"><option value="PERCENTAGE">Pourcentage (%)</option><option value="FIXED">Montant fixe</option></select></div>
+        <div class="fg"><label class="fl">Valeur <span>*</span></label><input type="number" class="fc" id="pval" placeholder="20" min="0"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Max utilisations</label><input type="number" class="fc" id="pmax" placeholder="Illimité" min="1"></div>
+        <div class="fg"><label class="fl">Expiration</label><input type="date" class="fc" id="pexp"></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="cm('mcp')">Annuler</button>
+      <button class="btn btn-p" id="bcpr" onclick="createPR()">Créer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ajouter participant -->
+<div class="mo" id="map">
+  <div class="md">
+    <div class="mh"><h3>Ajouter un participant</h3><button class="ibtn" onclick="cm('map')"><span class="mi material-icons-round">close</span></button></div>
+    <div class="mb">
+      <div class="fr">
+        <div class="fg"><label class="fl">Prénom <span>*</span></label><input type="text" class="fc" id="pfn"></div>
+        <div class="fg"><label class="fl">Nom <span>*</span></label><input type="text" class="fc" id="pln"></div>
+      </div>
+      <div class="fg"><label class="fl">Email <span>*</span></label><input type="email" class="fc" id="pem"></div>
+      <div class="fg"><label class="fl">Téléphone</label><input type="tel" class="fc" id="pph2" placeholder="+237 6XX XXX XXX"></div>
+      <div class="fg"><label class="fl">Événement <span>*</span></label><select class="fc" id="pev2" onchange="loadTktsP()"><option value="">— Choisir —</option></select></div>
+      <div class="fg"><label class="fl">Type de billet <span>*</span></label><select class="fc" id="ptid"><option value="">— Choisir l'événement d'abord —</option></select></div>
+      <div class="fg"><label class="fl">Référence paiement</label><input type="text" class="fc" id="pref" placeholder="CASH-001, MTN-REF-XXX..."><div class="fh">Laissez vide = inscription sans paiement</div></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="cm('map')">Annuler</button>
+      <button class="btn btn-p" id="bap" onclick="addP()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<!-- Voir billet -->
+<div class="mo" id="mvt">
+  <div class="md">
+    <div class="mh"><h3>Billet numérique</h3><button class="ibtn" onclick="cm('mvt')"><span class="mi material-icons-round">close</span></button></div>
+    <div class="mb" style="text-align:center">
+      <div style="background:var(--s2);border-radius:12px;padding:24px;margin-bottom:16px">
+        <div style="width:160px;height:160px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+          <span class="mi material-icons-round" style="font-size:80px;color:var(--tx)">qr_code_2</span>
+        </div>
+        <div style="font-family:monospace;font-size:16px;letter-spacing:2px;font-weight:600" id="vtcode">—</div>
+        <div class="mt16"><div style="font-size:18px;font-weight:600" id="vtname">—</div><div class="tm" id="vttype">—</div><div class="tm ts mt4" id="vtemail">—</div></div>
+      </div>
+      <span class="b b-ok" id="vtstatus" style="font-size:13px;padding:6px 16px">—</span>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="cm('mvt')">Fermer</button>
+      <div class="cs" style="margin:0;font-size:12px">🔜 Envoi email bientôt disponible</div>
+    </div>
+  </div>
+</div>
+
+<div class="tc" id="tc"></div>
+
+<script>
+const API = 'http://localhost:5000/api';
+let TK = localStorage.getItem('evx_tk');
+let ME = JSON.parse(localStorage.getItem('evx_me') || 'null');
+let EVS = [];
+let PP = 1, PTP = 1;
+let RSCANS = [];
+
+// ── HTTP ──
+async function req(method, path, body) {
+  const o = { method, headers: { 'Content-Type': 'application/json' } };
+  if (TK) o.headers['Authorization'] = 'Bearer ' + TK;
+  if (body) o.body = JSON.stringify(body);
+  try {
+    const r = await fetch(API + path, o);
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Erreur serveur');
+    return d;
+  } catch(e) {
+    if (e.message === 'Failed to fetch') throw new Error('Serveur inaccessible — vérifiez que le backend tourne sur :5000');
+    throw e;
+  }
+}
+const G = p => req('GET', p);
+const P = (p,b) => req('POST', p, b);
+const PUT = (p,b) => req('PUT', p, b);
+const PATCH = (p,b) => req('PATCH', p, b);
+const DEL = p => req('DELETE', p);
+
+// ── AUTH ──
+function atab(t) {
+  document.querySelectorAll('.atab').forEach((el,i) => el.classList.toggle('on', i===(t==='login'?0:1)));
+  document.getElementById('fl').classList.toggle('on', t==='login');
+  document.getElementById('fr').classList.toggle('on', t==='register');
+  document.getElementById('aerr').classList.remove('show');
+}
+function aerr(m) { const e = document.getElementById('aerr'); e.textContent = m; e.classList.add('show'); }
+
+async function login() {
+  const email = document.getElementById('le').value.trim();
+  const password = document.getElementById('lp').value;
+  if (!email || !password) return aerr('Remplissez tous les champs');
+  const btn = document.getElementById('blg');
+  btn.innerHTML = '<div class="spin"></div> Connexion...'; btn.disabled = true;
+  try {
+    const d = await P('/auth/login', { email, password });
+    TK = d.data.token; ME = d.data.organizer;
+    localStorage.setItem('evx_tk', TK);
+    localStorage.setItem('evx_me', JSON.stringify(ME));
+    initApp();
+  } catch(e) { aerr(e.message); btn.innerHTML = 'Se connecter'; btn.disabled = false; }
+}
+
+async function register() {
+  const name = document.getElementById('rn').value.trim();
+  const email = document.getElementById('re').value.trim();
+  const password = document.getElementById('rp').value;
+  if (!name || !email || !password) return aerr('Remplissez les champs obligatoires');
+  if (password.length < 6) return aerr('Mot de passe min. 6 caractères');
+  const btn = document.getElementById('brg');
+  btn.innerHTML = '<div class="spin"></div> Création...'; btn.disabled = true;
+  try {
+    const d = await P('/auth/register', { name, email, password, phone: document.getElementById('rph').value, org_name: document.getElementById('ro').value });
+    TK = d.data.token; ME = d.data.organizer;
+    localStorage.setItem('evx_tk', TK);
+    localStorage.setItem('evx_me', JSON.stringify(ME));
+    initApp();
+  } catch(e) { aerr(e.message); btn.innerHTML = 'Créer mon compte'; btn.disabled = false; }
+}
+
+function logout() {
+  TK = null; ME = null;
+  localStorage.removeItem('evx_tk'); localStorage.removeItem('evx_me');
+  document.getElementById('auth').classList.remove('hide');
+  toast('Déconnecté');
+}
+
+// ── INIT ──
+function initApp() {
+  document.getElementById('auth').classList.add('hide');
+  const ini = ME.name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+  document.getElementById('tava').textContent = ini;
+  document.getElementById('sorg').textContent = ME.org_name || ME.name;
+  document.getElementById('dgreet').textContent = `Bonjour, ${ME.name.split(' ')[0]} 👋`;
+  fillSettings();
+  loadEVS();
+  loadDash();
+}
+
+// ── NAVIGATION ──
+const TITLES = { dashboard:'Tableau de bord', events:'Mes événements', participants:'Participants', tickets:'Billetterie', checkin:'Check-in', analytics:'Analytics', promos:'Codes promo', settings:'Paramètres' };
+function go(id) {
+  document.querySelectorAll('.nav').forEach(el => el.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('on'));
+  const p = document.getElementById('page-'+id);
+  if (p) p.classList.add('on');
+  document.getElementById('ptitle').textContent = TITLES[id] || id;
+  document.querySelectorAll('.nav').forEach(el => { if (el.getAttribute('onclick')?.includes("'"+id+"'")) el.classList.add('on'); });
+  if (id === 'analytics') loadA();
+}
+
+// ── MODALS ──
+function om(id) { document.getElementById(id).classList.add('open'); }
+function cm(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.mo').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); }));
+
+// ── TOAST ──
+function toast(msg, type='') {
+  const tc = document.getElementById('tc');
+  const t = document.createElement('div');
+  const icons = { ok:'check_circle', err:'error', w:'warning' };
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="mi material-icons-round" style="font-size:18px">${icons[type]||'info'}</span>${msg}`;
+  tc.appendChild(t);
+  setTimeout(() => { t.style.animation = 'si .3s reverse'; setTimeout(() => t.remove(), 280); }, 3000);
+}
+
+// ── HELPERS ──
+const CUR = { XAF:' XAF', XOF:' XOF', EUR:'€', USD:'$' };
+function fmt(v, cur) {
+  const c = cur || ME?.currency || 'XAF';
+  const n = parseFloat(v) || 0;
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M' + (CUR[c]||c);
+  if (n >= 1000) return (n/1000).toFixed(0) + 'K' + (CUR[c]||c);
+  return n.toLocaleString('fr-FR') + (CUR[c]||c);
+}
+function fdate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+}
+const SL = { DRAFT:'Brouillon', PUBLISHED:'Publié', CANCELLED:'Annulé', COMPLETED:'Terminé' };
+const SC = { DRAFT:'b-n', PUBLISHED:'b-ok', CANCELLED:'b-e', COMPLETED:'b-i' };
+const RL = { CONFIRMED:'Confirmé', PENDING:'En attente', MANUAL:'Manuel', CANCELLED:'Annulé', REFUNDED:'Remboursé' };
+const RC = { CONFIRMED:'b-ok', PENDING:'b-w', MANUAL:'b-i', CANCELLED:'b-e', REFUNDED:'b-n' };
+
+function setBtn(id, loading, txt) {
+  const b = document.getElementById(id);
+  if (loading) { b.innerHTML = '<div class="spin"></div>'; b.disabled = true; }
+  else { b.innerHTML = txt; b.disabled = false; }
+}
+
+// ── EVENTS ──
+async function loadEVS() {
+  try {
+    const d = await G('/events?limit=100');
+    EVS = d.data.events;
+    renderEVS(EVS);
+    fillSelects();
+    document.getElementById('evcnt').textContent = EVS.length + ' événement(s)';
+    buildChart();
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+function fillSelects() {
+  ['pev','tev','cev','anev','prev','teid','peid','pev2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const first = el.options[0] ? el.options[0].cloneNode(true) : null;
+    el.innerHTML = '';
+    if (first) {
+      el.appendChild(first);
+    } else {
+      const o = document.createElement('option');
+      o.value = '';
+      o.textContent = '— Choisir —';
+      el.appendChild(o);
+    }
+    EVS.forEach(ev => {
+      const o = document.createElement('option');
+      o.value = ev.id; o.textContent = ev.title;
+      el.appendChild(o);
+    });
+  });
+}
+
+const COLS = ['linear-gradient(135deg,#1a73e8,#4285f4)','linear-gradient(135deg,#34a853,#1e8e3e)','linear-gradient(135deg,#ea4335,#d93025)','linear-gradient(135deg,#f9ab00,#e37400)','linear-gradient(135deg,#9c27b0,#7b1fa2)'];
+const ICOS = ['celebration','laptop','rocket_launch','music_note','groups'];
+
+function renderEVS(evs) {
+  const g = document.getElementById('evgrid');
+  if (!evs.length) {
+    g.innerHTML = '<div style="grid-column:1/-1" class="empty"><span class="mi material-icons-round">event</span><h3>Aucun événement</h3><p>Créez votre premier événement</p><button class="btn btn-p" style="margin-top:16px" onclick="om(\'mce\')"><span class="mi material-icons-round">add</span>Créer</button></div>';
+    return;
+  }
+  const cur = ME?.currency || 'XAF';
+  g.innerHTML = evs.map((ev,i) => {
+    const sold = parseInt(ev.registrations_count)||0;
+    const cap = ev.capacity;
+    const pct = cap ? Math.round(sold/cap*100) : null;
+    return `<div class="ec">
+      <div class="ecov" style="background:${COLS[i%COLS.length]}">
+        <span class="mi material-icons-round">${ICOS[i%ICOS.length]}</span>
+        <div style="position:absolute;top:12px;right:12px"><span class="b ${SC[ev.status]||'b-n'}">${SL[ev.status]||ev.status}</span></div>
+      </div>
+      <div class="ecb">
+        <div class="ect">${ev.title}</div>
+        <div class="ecm">
+          <div class="ecmi"><span class="mi material-icons-round">calendar_today</span>${fdate(ev.start_date)}</div>
+          ${ev.city?`<div class="ecmi"><span class="mi material-icons-round">location_on</span>${ev.district?ev.district+' · ':''}${ev.city}</div>`:''}
+        </div>
+        <div class="mt8">
+          <div class="flb" style="margin-bottom:4px"><small class="tm">${sold}${cap?' / '+cap:''} inscrits</small>${pct!==null?`<small class="tm">${pct}%</small>`:''}</div>
+          ${cap?`<div class="prog"><div class="pb ${pct>80?'y':''}" style="width:${pct}%"></div></div>`:''}
+        </div>
+      </div>
+      <div class="ecf">
+        <div class="ecs"><strong>${sold}</strong><span>Inscrits</span></div>
+        <div class="ecs"><strong>${fmt(ev.total_revenue||0,cur)}</strong><span>Revenus</span></div>
+        ${ev.status==='DRAFT'
+          ? `<button class="btn btn-o btn-sm" onclick="pubEv('${ev.id}')">Publier</button>`
+          : `<button class="btn btn-t btn-sm" onclick="setPev('${ev.id}')">Participants</button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function fevt(chip, status) {
+  document.querySelectorAll('#evfilt .chip').forEach(c=>c.classList.remove('on'));
+  chip.classList.add('on');
+  renderEVS(status ? EVS.filter(e=>e.status===status) : EVS);
+}
+
+async function createEv() {
+  const title = document.getElementById('et').value.trim();
+  const start = document.getElementById('es').value;
+  const end = document.getElementById('ee').value;
+  if (!title || !start || !end) return toast('Titre, début et fin sont obligatoires', 'w');
+  setBtn('bcre', true);
+  try {
+    await P('/events', {
+      title, description: document.getElementById('ed').value,
+      start_date: new Date(start).toISOString(), end_date: new Date(end).toISOString(),
+      location_type: document.getElementById('elt').value,
+      address: document.getElementById('ea').value, district: document.getElementById('edi').value,
+      city: document.getElementById('eci').value, capacity: document.getElementById('ecap').value || null,
+    });
+    cm('mce'); toast('Événement créé ✓', 'ok');
+    ['et','ed','es','ee','ea','edi','eci','ecap'].forEach(id => document.getElementById(id).value='');
+    loadEVS(); loadDash();
+  } catch(e) { toast(e.message, 'err'); }
+  finally { setBtn('bcre', false, 'Créer l\'événement'); }
+}
+
+async function pubEv(id) {
+  try {
+    await P(`/events/${id}/publish`);
+    toast('Événement publié ✓', 'ok');
+    loadEVS(); loadDash();
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+// ── DASHBOARD ──
+async function loadDash() {
+  try {
+    const d = await G('/dashboard');
+    const { events, revenue, registrations, recent_events } = d.data;
+    const cur = ME?.currency || 'XAF';
+    document.getElementById('dstats').innerHTML = `
+      <div class="sc"><div><p>Événements actifs</p><h2>${events.active_events}</h2><small>${events.total_events} au total</small></div><div class="si b"><span class="mi material-icons-round">event</span></div></div>
+      <div class="sc"><div><p>Inscriptions</p><h2>${registrations.total_registrations}</h2><small>${registrations.this_month} ce mois</small></div><div class="si g"><span class="mi material-icons-round">people</span></div></div>
+      <div class="sc"><div><p>Revenus totaux</p><h2>${fmt(revenue.total_revenue,cur)}</h2><small>${fmt(revenue.revenue_this_month,cur)} ce mois</small></div><div class="si y"><span class="mi material-icons-round">payments</span></div></div>
+      <div class="sc"><div><p>Taux de présence</p><h2>${registrations.total_registrations>0?Math.round(registrations.checked_in/registrations.total_registrations*100):0}%</h2><small>${registrations.checked_in} présents</small></div><div class="si r"><span class="mi material-icons-round">how_to_reg</span></div></div>`;
+    document.getElementById('devt').innerHTML = recent_events.length ? recent_events.map(ev=>`
+      <tr><td><div class="fw5">${ev.title}</div><div class="ts tm">${ev.city||'—'}</div></td>
+      <td><span class="b ${SC[ev.status]||'b-n'}">${SL[ev.status]||ev.status}</span></td>
+      <td>${ev.registrations_count||0}</td><td>${fmt(ev.revenue||0,cur)}</td></tr>
+    `).join('') : '<tr><td colspan="4"><div class="empty" style="padding:20px"><p>Aucun événement</p></div></td></tr>';
+    document.getElementById('dact').innerHTML = `
+      <div class="al">
+        <div class="ai"><div class="ad" style="background:#e8f0fe">📊</div><div class="ac2"><p><strong>${registrations.confirmed} inscriptions</strong> confirmées</p><small>Mis à jour maintenant</small></div></div>
+        <div class="ai"><div class="ad" style="background:#e6f4ea">💳</div><div class="ac2"><p>Revenus cette semaine : <strong>${fmt(revenue.revenue_this_week,cur)}</strong></p><small>Paiements confirmés</small></div></div>
+        <div class="ai"><div class="ad" style="background:#fce8e6">⏳</div><div class="ac2"><p><strong>${registrations.pending}</strong> inscriptions en attente</p><small>À valider manuellement</small></div></div>
+        <div class="ai"><div class="ad" style="background:#fef7e0">🎫</div><div class="ac2"><p><strong>${registrations.checked_in}</strong> participants checkés</p><small>Sur tous vos événements</small></div></div>
+      </div>`;
+  } catch(e) {
+    document.getElementById('dstats').innerHTML = `<div style="grid-column:1/-1;color:var(--s);padding:20px">⚠️ ${e.message}</div>`;
+  }
+}
+
+function buildChart() {
+  const c = document.getElementById('cbars'); if (!c) return;
+  const v = Array.from({length:30},()=>Math.floor(Math.random()*40)+2);
+  const m = Math.max(...v);
+  c.innerHTML = v.map(x=>`<div class="bar" style="height:${(x/m)*100}%" title="${x} inscriptions"></div>`).join('');
+}
+
+// ── PARTICIPANTS ──
+function setPev(id) { go('participants'); document.getElementById('pev').value = id; loadP(); }
+
+async function loadP() {
+  const evId = document.getElementById('pev').value;
+  const status = document.getElementById('pst').value;
+  const tb = document.getElementById('ptbody');
+  if (!evId) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><span class="mi material-icons-round">people</span><h3>Sélectionnez un événement</h3></div></td></tr>'; document.getElementById('bcsv').disabled=true; return; }
+  document.getElementById('bcsv').disabled = false;
+  tb.innerHTML = '<tr><td colspan="7"><div class="ld"><div class="spin d"></div></div></td></tr>';
+  try {
+    let url = `/events/${evId}/registrations?page=${PP}&limit=20`;
+    if (status) url += `&status=${status}`;
+    const d = await G(url);
+    const regs = d.data.registrations;
+    const pg = d.data.pagination;
+    PTP = pg.pages;
+    document.getElementById('pcnt').textContent = pg.total + ' participant(s)';
+    document.getElementById('ppinfo').textContent = `Affichage ${(pg.page-1)*pg.limit+1}–${Math.min(pg.page*pg.limit,pg.total)} sur ${pg.total}`;
+    document.getElementById('bpp').disabled = pg.page <= 1;
+    document.getElementById('bpn').disabled = pg.page >= pg.pages;
+    tb.innerHTML = regs.length ? regs.map(r=>`
+      <tr>
+        <td><div class="flc g8"><div class="ava" style="width:32px;height:32px;font-size:12px">${r.first_name[0]}${r.last_name[0]}</div><div><div class="fw5">${r.first_name} ${r.last_name}</div><div class="ts tm">${r.email}</div></div></div></td>
+        <td>${r.ticket_type_name||'—'}</td>
+        <td>${fmt(r.amount_paid, ME?.currency)}</td>
+        <td><span class="b ${RC[r.status]||'b-n'}">${RL[r.status]||r.status}</span></td>
+        <td>${r.checked_in?'<span class="b b-ok">Présent ✓</span>':'<span class="b b-n">Non présent</span>'}</td>
+        <td>${fdate(r.created_at)}</td>
+        <td><div class="ac">
+          <button class="ibtn" title="Billet" onclick='showTkt(${JSON.stringify(r)})'><span class="mi material-icons-round">qr_code</span></button>
+          ${r.status==='PENDING'?`<button class="ibtn" title="Confirmer" onclick="confReg('${evId}','${r.id}')"><span class="mi material-icons-round" style="color:var(--ok)">check_circle</span></button>`:''}
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="7"><div class="empty" style="padding:20px"><span class="mi material-icons-round">people_outline</span><h3>Aucun participant</h3></div></td></tr>';
+  } catch(e) { tb.innerHTML=`<tr><td colspan="7" style="color:var(--s);padding:20px">${e.message}</td></tr>`; }
+}
+
+function filterP() {
+  const s = document.getElementById('psrch').value.toLowerCase();
+  document.querySelectorAll('#ptbody tr').forEach(tr => tr.style.display=tr.textContent.toLowerCase().includes(s)?'':'none');
+}
+
+function chgPg(d) { PP = Math.max(1,Math.min(PTP,PP+d)); loadP(); }
+
+async function confReg(evId, rid) {
+  try { await PATCH(`/events/${evId}/registrations/${rid}/confirm`,{payment_ref:'MANUAL'}); toast('Confirmé ✓','ok'); loadP(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+function exportCSV() {
+  const evId = document.getElementById('pev').value;
+  if (!evId) return;
+  const a = document.createElement('a');
+  a.href = API + `/events/${evId}/registrations/export`;
+  a.click();
+  toast('Export CSV téléchargé','ok');
+}
+
+async function addP() {
+  const fn=document.getElementById('pfn').value.trim(), ln=document.getElementById('pln').value.trim();
+  const em=document.getElementById('pem').value.trim(), evId=document.getElementById('pev2').value;
+  const tid=document.getElementById('ptid').value, ref=document.getElementById('pref').value.trim();
+  if (!fn||!ln||!em||!evId||!tid) return toast('Remplissez les champs obligatoires','w');
+  setBtn('bap', true);
+  try {
+    const reg = await P(`/events/${evId}/registrations`,{first_name:fn,last_name:ln,email:em,phone:document.getElementById('pph2').value,ticket_type_id:tid});
+    if (ref && reg.data.registration.status==='PENDING') await PATCH(`/events/${evId}/registrations/${reg.data.registration.id}/confirm`,{payment_ref:ref});
+    cm('map'); toast('Participant ajouté ✓','ok');
+    loadP();
+  } catch(e) { toast(e.message,'err'); }
+  finally { setBtn('bap', false, 'Ajouter'); }
+}
+
+async function loadTktsP() {
+  const evId = document.getElementById('pev2').value;
+  const sel = document.getElementById('ptid');
+  sel.innerHTML = '<option>Chargement...</option>';
+  if (!evId) return;
+  try {
+    const d = await G(`/events/${evId}/tickets`);
+    sel.innerHTML = d.data.ticket_types.map(t=>`<option value="${t.id}">${t.name} — ${fmt(t.price,ME?.currency)}</option>`).join('');
+  } catch(e) { sel.innerHTML='<option>Erreur</option>'; }
+}
+
+function showTkt(r) {
+  document.getElementById('vtcode').textContent = r.ticket_code;
+  document.getElementById('vtname').textContent = r.first_name+' '+r.last_name;
+  document.getElementById('vttype').textContent = r.ticket_type_name||'—';
+  document.getElementById('vtemail').textContent = r.email;
+  document.getElementById('vtstatus').textContent = (RL[r.status]||r.status)+' · '+fmt(r.amount_paid,ME?.currency)+' payés';
+  om('mvt');
+}
+
+// ── BILLETTERIE ──
+async function loadT() {
+  const evId = document.getElementById('tev').value;
+  const tb = document.getElementById('ttbody');
+  if (!evId) { tb.innerHTML='<tr><td colspan="7"><div class="empty"><span class="mi material-icons-round">confirmation_number</span><h3>Sélectionnez un événement</h3></div></td></tr>'; return; }
+  tb.innerHTML='<tr><td colspan="7"><div class="ld"><div class="spin d"></div></div></td></tr>';
+  try {
+    const d = await G(`/events/${evId}/tickets`);
+    const tks = d.data.ticket_types;
+    tb.innerHTML = tks.length ? tks.map(t=>`
+      <tr>
+        <td><div class="fw5">${t.name}</div>${t.description?`<div class="ts tm">${t.description}</div>`:''}</td>
+        <td>${fmt(t.price,ME?.currency)}</td>
+        <td>${t.quantity||'∞'}</td>
+        <td>${t.sold}${t.quantity?`<div class="prog mt4" style="width:80px"><div class="pb ${t.sold/t.quantity>.8?'y':''}" style="width:${Math.round(t.sold/t.quantity*100)}%"></div></div>`:''}</td>
+        <td>${t.quantity?t.quantity-t.sold:'∞'}</td>
+        <td><span class="b ${t.is_active?'b-ok':'b-n'}">${t.is_active?'Actif':'Inactif'}</span></td>
+        <td><div class="ac">
+          <button class="ibtn" onclick="togT('${evId}','${t.id}',${!t.is_active})"><span class="mi material-icons-round">${t.is_active?'toggle_off':'toggle_on'}</span></button>
+          ${t.sold===0?`<button class="ibtn" onclick="delT('${evId}','${t.id}')"><span class="mi material-icons-round" style="color:var(--s)">delete</span></button>`:''}
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="7"><div class="empty" style="padding:20px"><span class="mi material-icons-round">confirmation_number</span><h3>Aucun billet</h3></div></td></tr>';
+  } catch(e) { tb.innerHTML=`<tr><td colspan="7" style="color:var(--s);padding:20px">${e.message}</td></tr>`; }
+}
+
+async function createT() {
+  const evId=document.getElementById('teid').value, name=document.getElementById('tn').value.trim(), price=document.getElementById('tp').value;
+  if (!evId||!name||price==='') return toast('Remplissez les champs obligatoires','w');
+  setBtn('bct',true);
+  try {
+    await P(`/events/${evId}/tickets`,{name,price:parseFloat(price),description:document.getElementById('tds').value,quantity:document.getElementById('tq').value||null});
+    cm('mct'); toast('Type de billet créé ✓','ok');
+    if (document.getElementById('tev').value===evId) loadT();
+  } catch(e) { toast(e.message,'err'); }
+  finally { setBtn('bct',false,'Créer'); }
+}
+
+async function togT(evId, tid, active) {
+  try { await PUT(`/events/${evId}/tickets/${tid}`,{is_active:active}); toast('Mis à jour','ok'); loadT(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+async function delT(evId, tid) {
+  if (!confirm('Supprimer ce type de billet ?')) return;
+  try { await DEL(`/events/${evId}/tickets/${tid}`); toast('Supprimé','ok'); loadT(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+// ── CHECKIN ──
+async function scan() {
+  const evId=document.getElementById('cev').value, code=document.getElementById('sci').value.trim().toUpperCase();
+  ['rv','ra','ri'].forEach(id=>document.getElementById(id).style.display='none');
+  if (!evId) return toast('Sélectionnez un événement','w');
+  if (!code) return toast('Entrez un code billet','w');
+  setBtn('bscan',true);
+  try {
+    const d = await P('/checkin/scan',{ticket_code:code,event_id:evId});
+    const r = d.data.registration;
+    document.getElementById('rvn').textContent = r.first_name+' '+r.last_name;
+    document.getElementById('rvt').textContent = r.ticket_type_name||'';
+    document.getElementById('rv').style.display='block';
+    toast(`Entrée validée — ${r.first_name} ${r.last_name}`,'ok');
+    document.getElementById('sci').value='';
+    addRscan(r,true); loadCS();
+  } catch(e) {
+    if (e.message.includes('déjà')) { document.getElementById('rat').textContent=e.message; document.getElementById('ra').style.display='block'; }
+    else { document.getElementById('rim').textContent=e.message; document.getElementById('ri').style.display='block'; }
+  }
+  finally { setBtn('bscan',false,'<span class="mi material-icons-round">qr_code_scanner</span>Valider l\'entrée'); }
+}
+
+async function loadCS() {
+  const evId=document.getElementById('cev').value;
+  if (!evId) return;
+  try {
+    const d = await G(`/checkin/${evId}/stats`);
+    const s = d.data.summary;
+    document.getElementById('cstats').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="text-align:center;padding:16px;background:var(--s2);border-radius:8px"><div style="font-size:32px;font-weight:600;color:var(--p)">${s.total_confirmed}</div><div class="tm ts">Confirmés</div></div>
+        <div style="text-align:center;padding:16px;background:#e6f4ea;border-radius:8px"><div style="font-size:32px;font-weight:600;color:var(--ok)">${s.total_checked_in}</div><div class="tm ts">Présents</div></div>
+        <div style="text-align:center;padding:16px;background:var(--s2);border-radius:8px"><div style="font-size:32px;font-weight:600;color:var(--tx2)">${s.total_not_checked_in}</div><div class="tm ts">En attente</div></div>
+        <div style="text-align:center;padding:16px;background:#e8f0fe;border-radius:8px"><div style="font-size:32px;font-weight:600;color:var(--p)">${s.presence_rate}</div><div class="tm ts">Présence</div></div>
+      </div>`;
+  } catch(e) { document.getElementById('cstats').innerHTML=`<p style="color:var(--s)">${e.message}</p>`; }
+}
+
+function addRscan(r, ok) {
+  RSCANS.unshift({name:`${r.first_name} ${r.last_name}`,ticket:r.ticket_type_name||'—',code:r.ticket_code,ok});
+  document.getElementById('crec').innerHTML = RSCANS.slice(0,5).map(s=>`
+    <div class="ai"><div class="ad" style="background:${s.ok?'#e6f4ea':'#fce8e6'};font-size:16px">${s.ok?'✅':'❌'}</div>
+    <div class="ac2"><p><strong>${s.name}</strong> — ${s.ticket}</p><small>${s.code}</small></div></div>`).join('');
+}
+
+// ── ANALYTICS ──
+async function loadA() {
+  const evId = document.getElementById('anev').value;
+  const el = document.getElementById('ancon');
+  if (!evId) { el.innerHTML='<div class="cs"><span class="mi material-icons-round">info</span>Sélectionnez un événement pour voir les analytics détaillés</div>'; return; }
+  el.innerHTML='<div class="ld"><div class="spin d"></div></div>';
+  try {
+    const d = await G(`/events/${evId}/stats`);
+    const s = d.data.summary, cur = ME?.currency||'XAF';
+    const total = parseInt(s.total_confirmed)||1;
+    const chs = [
+      {l:'Mobile Money (CinetPay)', n:parseInt(s.mobile_money_count)||0, c:'var(--p)'},
+      {l:'Carte bancaire (Stripe)', n:parseInt(s.card_count)||0, c:'var(--ok)'},
+      {l:'Manuel', n:parseInt(s.manual_count)||0, c:'var(--w)'},
+      {l:'Gratuit', n:parseInt(s.free_count)||0, c:'var(--tx3)'},
+    ].filter(c=>c.n>0);
+    el.innerHTML = `
+      <div class="sg">
+        <div class="sc"><div><p>Confirmés</p><h2>${s.total_confirmed}</h2></div><div class="si g"><span class="mi material-icons-round">people</span></div></div>
+        <div class="sc"><div><p>Présents</p><h2>${s.total_checked_in}</h2></div><div class="si b"><span class="mi material-icons-round">how_to_reg</span></div></div>
+        <div class="sc"><div><p>Revenus</p><h2>${fmt(s.total_revenue,cur)}</h2></div><div class="si y"><span class="mi material-icons-round">payments</span></div></div>
+        <div class="sc"><div><p>En attente</p><h2>${s.total_pending}</h2></div><div class="si r"><span class="mi material-icons-round">hourglass_empty</span></div></div>
+      </div>
+      <div class="g2">
+        <div class="card"><div class="card-h"><h3>Canaux de paiement</h3></div><div class="card-b">
+          ${chs.length ? chs.map(c=>{const p=Math.round(c.n/total*100);return `<div style="margin-bottom:12px"><div class="flb" style="margin-bottom:4px"><span class="flc g8"><span style="width:12px;height:12px;background:${c.c};border-radius:2px;display:inline-block"></span>${c.l}</span><strong>${p}%</strong></div><div class="prog"><div class="pb" style="width:${p}%;background:${c.c}"></div></div></div>`;}).join('') : '<p class="tm">Aucune donnée</p>'}
+        </div></div>
+        <div class="card"><div class="card-h"><h3>Par type de billet</h3></div><div class="card-b">
+          ${d.data.by_ticket_type.map(t=>`<div class="flb" style="margin-bottom:12px"><div><div class="fw5">${t.name}</div><div class="ts tm">${fmt(t.price,cur)}</div></div><div style="text-align:right"><div class="fw6">${t.sold} vendus</div><div class="ts tm">${fmt(t.revenue,cur)}</div></div></div>`).join('')||'<p class="tm">Aucune donnée</p>'}
+        </div></div>
+      </div>`;
+  } catch(e) { el.innerHTML=`<p style="color:var(--s)">${e.message}</p>`; }
+}
+
+// ── PROMOS ──
+async function loadPR() {
+  const evId = document.getElementById('prev').value;
+  const tb = document.getElementById('prtbody');
+  if (!evId) { tb.innerHTML='<tr><td colspan="6"><div class="empty"><span class="mi material-icons-round">local_offer</span><h3>Sélectionnez un événement</h3></div></td></tr>'; return; }
+  tb.innerHTML='<tr><td colspan="6"><div class="ld"><div class="spin d"></div></div></td></tr>';
+  try {
+    const d = await G(`/events/${evId}/promos`);
+    const ps = d.data.promo_codes;
+    tb.innerHTML = ps.length ? ps.map(p=>`
+      <tr>
+        <td><code style="background:var(--s3);padding:3px 8px;border-radius:4px">${p.code}</code></td>
+        <td>${p.discount_type==='PERCENTAGE'?p.discount_value+'%':fmt(p.discount_value,ME?.currency)}</td>
+        <td>${p.used_count}${p.max_uses?' / '+p.max_uses:''}${p.max_uses?`<div class="prog mt4" style="width:80px"><div class="pb" style="width:${Math.round(p.used_count/p.max_uses*100)}%"></div></div>`:''}</td>
+        <td>${p.expires_at?fdate(p.expires_at):'—'}</td>
+        <td><span class="b ${p.is_active?'b-ok':'b-n'}">${p.is_active?'Actif':'Inactif'}</span></td>
+        <td><div class="ac">
+          <button class="ibtn" onclick="togPR('${evId}','${p.id}')"><span class="mi material-icons-round">${p.is_active?'toggle_off':'toggle_on'}</span></button>
+          ${p.used_count===0?`<button class="ibtn" onclick="delPR('${evId}','${p.id}')"><span class="mi material-icons-round" style="color:var(--s)">delete</span></button>`:''}
+        </div></td>
+      </tr>`).join('') : '<tr><td colspan="6"><div class="empty" style="padding:20px"><span class="mi material-icons-round">local_offer</span><h3>Aucun code promo</h3></div></td></tr>';
+  } catch(e) { tb.innerHTML=`<tr><td colspan="6" style="color:var(--s);padding:20px">${e.message}</td></tr>`; }
+}
+
+async function createPR() {
+  const evId=document.getElementById('peid').value, code=document.getElementById('pc2').value.trim(), val=document.getElementById('pval').value;
+  if (!evId||!code||!val) return toast('Remplissez les champs obligatoires','w');
+  setBtn('bcpr',true);
+  try {
+    await P(`/events/${evId}/promos`,{code,discount_type:document.getElementById('ptype').value,discount_value:parseFloat(val),max_uses:document.getElementById('pmax').value||null,expires_at:document.getElementById('pexp').value||null});
+    cm('mcp'); toast('Code promo créé ✓','ok');
+    document.getElementById('prev').value=evId; loadPR();
+  } catch(e) { toast(e.message,'err'); }
+  finally { setBtn('bcpr',false,'Créer'); }
+}
+
+async function togPR(evId, pid) {
+  try { await PATCH(`/events/${evId}/promos/${pid}/toggle`); toast('Mis à jour','ok'); loadPR(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+async function delPR(evId, pid) {
+  if (!confirm('Supprimer ce code promo ?')) return;
+  try { await DEL(`/events/${evId}/promos/${pid}`); toast('Supprimé','ok'); loadPR(); }
+  catch(e) { toast(e.message,'err'); }
+}
+
+// ── SETTINGS ──
+function fillSettings() {
+  if (!ME) return;
+  document.getElementById('sn').value = ME.name||'';
+  document.getElementById('se').value = ME.email||'';
+  document.getElementById('sph').value = ME.phone||'';
+  document.getElementById('scu').value = ME.currency||'XAF';
+  document.getElementById('stz').value = ME.timezone||'Africa/Douala';
+  document.getElementById('son').value = ME.org_name||'';
+  document.getElementById('sco').value = ME.country||'CM';
+}
+
+async function saveP() {
+  try {
+    const d = await PUT('/auth/me',{name:document.getElementById('sn').value,phone:document.getElementById('sph').value,org_name:document.getElementById('son').value,currency:document.getElementById('scu').value,timezone:document.getElementById('stz').value});
+    ME = d.data.organizer; localStorage.setItem('evx_me',JSON.stringify(ME));
+    document.getElementById('sorg').textContent = ME.org_name||ME.name;
+    toast('Profil mis à jour ✓','ok');
+  } catch(e) { toast(e.message,'err'); }
+}
+
+async function chgPwd() {
+  const cur=document.getElementById('pc').value, nw=document.getElementById('pn').value, co=document.getElementById('pco').value;
+  if (!cur||!nw||!co) return toast('Remplissez tous les champs','w');
+  if (nw !== co) return toast('Les mots de passe ne correspondent pas','w');
+  if (nw.length < 6) return toast('Min. 6 caractères','w');
+  try {
+    await PUT('/auth/change-password',{current_password:cur,new_password:nw});
+    toast('Mot de passe mis à jour ✓','ok');
+    ['pc','pn','pco'].forEach(id=>document.getElementById(id).value='');
+  } catch(e) { toast(e.message,'err'); }
+}
+
+function stab(el, id) {
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  ['st-p','st-o','st-s','st-pay'].forEach(sid=>{ const e=document.getElementById(sid); if(e) e.style.display=sid===id?'block':'none'; });
+}
+
+// ── BOOT ──
+if (TK && ME) {
+  initApp();
+} else {
+  document.getElementById('auth').classList.remove('hide');
+}
+</script>
+</body>
+</html>

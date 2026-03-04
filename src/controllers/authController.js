@@ -19,7 +19,7 @@ const register = async (req, res, next) => {
     if (existing.rows.length > 0) {
       return res.status(409).json({
         success: false,
-        error:   "Cet email est déjà utilisé",
+        error:   "Cette adresse email est déjà utilisé",
       });
     }
 

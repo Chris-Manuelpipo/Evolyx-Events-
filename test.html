@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolyx Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+/* ============================================
+   EVOLYX EVENTS — Design System Google-inspired
+   ============================================ */
+:root {
+  --primary:       #1a73e8;
+  --primary-dark:  #1557b0;
+  --primary-light: #e8f0fe;
+  --secondary:     #ea4335;
+  --success:       #34a853;
+  --warning:       #fbbc04;
+  --surface:       #ffffff;
+  --surface-2:     #f8f9fa;
+  --surface-3:     #f1f3f4;
+  --on-surface:    #202124;
+  --on-surface-2:  #5f6368;
+  --on-surface-3:  #9aa0a6;
+  --border:        #e8eaed;
+  --shadow-1:      0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  --shadow-2:      0 1px 3px rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
+  --shadow-3:      0 2px 6px rgba(60,64,67,.3), 0 6px 20px 4px rgba(60,64,67,.15);
+  --radius-sm:     4px;
+  --radius-md:     8px;
+  --radius-lg:     12px;
+  --radius-xl:     24px;
+  --font:          'Google Sans', sans-serif;
+  --font-display:  'Google Sans Display', sans-serif;
+  --sidebar-w:     256px;
+  --topbar-h:      64px;
+  --transition:    all 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--surface-2);
+  color: var(--on-surface);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ── Scrollbar ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Layout ─── */
+.app { display: flex; height: 100vh; }
+
+/* ── Sidebar ─── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  height: var(--topbar-h);
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--primary);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-icon .material-icons-round { color: white; font-size: 20px; }
+
+.logo-text { display: flex; flex-direction: column; }
+.logo-name { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--on-surface); line-height: 1.2; }
+.logo-tag  { font-size: 11px; color: var(--on-surface-3); }
+
+.sidebar-section { padding: 12px 0; }
+.sidebar-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .8px;
+  color: var(--on-surface-3); text-transform: uppercase;
+  padding: 8px 20px 4px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 20px; cursor: pointer;
+  border-radius: 0 24px 24px 0;
+  margin-right: 12px;
+  transition: var(--transition);
+  color: var(--on-surface-2);
+  font-weight: 500;
+  user-select: none;
+}
+
+.nav-item:hover { background: var(--surface-3); color: var(--on-surface); }
+
+.nav-item.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.nav-item .material-icons-round { font-size: 20px; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--primary);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 10px;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Main ─── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Topbar ─── */
+.topbar {
+  height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 16px;
+  flex-shrink: 0;
+}
+
+.topbar-title { font-family: var(--font-display); font-size: 20px; font-weight: 500; flex: 1; }
+
+.search-box {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 8px 16px;
+  width: 280px;
+  transition: var(--transition);
+}
+
+.search-box:focus-within {
+  background: var(--surface);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,115,232,.1);
+}
+
+.search-box input {
+  border: none; background: none;
+  font-family: var(--font); font-size: 14px;
+  color: var(--on-surface); outline: none; width: 100%;
+}
+
+.search-box .material-icons-round { color: var(--on-surface-3); font-size: 18px; }
+
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+.icon-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%; border: none;
+  background: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-2);
+  transition: var(--transition);
+}
+
+.icon-btn:hover { background: var(--surface-3); }
+.icon-btn .material-icons-round { font-size: 20px; }
+
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--primary);
+  color: white; font-weight: 600; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* ── Content ─── */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* ── Page ─── */
+.page { display: none; animation: fadeIn .2s ease; }
+.page.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Page header ─── */
+.page-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-header-left h1 {
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 500;
+}
+
+.page-header-left p { color: var(--on-surface-2); margin-top: 2px; }
+
+/* ── Buttons ─── */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 24px; height: 40px;
+  border-radius: var(--radius-xl);
+  font-family: var(--font); font-size: 14px;
+  font-weight: 500; cursor: pointer;
+  border: none; transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary); color: white;
+  box-shadow: 0 1px 2px rgba(60,64,67,.3);
+}
+
+.btn-primary:hover { background: var(--primary-dark); box-shadow: var(--shadow-1); }
+
+.btn-outlined {
+  background: none; color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.btn-outlined:hover { background: var(--primary-light); border-color: var(--primary); }
+
+.btn-text { background: none; color: var(--primary); padding: 0 12px; }
+.btn-text:hover { background: var(--primary-light); }
+
+.btn-danger { background: var(--secondary); color: white; }
+.btn-danger:hover { background: #c5221f; }
+
+.btn .material-icons-round { font-size: 18px; }
+.btn-sm { height: 32px; padding: 0 16px; font-size: 13px; }
+
+/* ── Cards ─── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.card-header h3 { font-size: 16px; font-weight: 500; }
+.card-body { padding: 24px; }
+.card-footer {
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+/* ── Stats grid ─── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.stat-card:hover { box-shadow: var(--shadow-1); }
+
+.stat-info p { color: var(--on-surface-2); font-size: 13px; margin-bottom: 6px; }
+.stat-info h2 { font-family: var(--font-display); font-size: 28px; font-weight: 400; }
+.stat-info small { color: var(--success); font-size: 12px; font-weight: 500; }
+.stat-info small.down { color: var(--secondary); }
+
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon .material-icons-round { font-size: 22px; }
+.stat-icon.blue   { background: #e8f0fe; color: var(--primary); }
+.stat-icon.green  { background: #e6f4ea; color: var(--success); }
+.stat-icon.yellow { background: #fef7e0; color: #f9ab00; }
+.stat-icon.red    { background: #fce8e6; color: var(--secondary); }
+
+/* ── Grid layouts ─── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+/* ── Tables ─── */
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+
+thead th {
+  text-align: left; padding: 12px 16px;
+  color: var(--on-surface-2); font-weight: 500;
+  font-size: 12px; text-transform: uppercase;
+  letter-spacing: .5px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  background: var(--surface-2);
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+
+tbody td { padding: 14px 16px; }
+
+/* ── Badges ─── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 12px;
+  font-size: 12px; font-weight: 500;
+}
+
+.badge-success  { background: #e6f4ea; color: #137333; }
+.badge-warning  { background: #fef7e0; color: #b06000; }
+.badge-error    { background: #fce8e6; color: #c5221f; }
+.badge-info     { background: #e8f0fe; color: #1557b0; }
+.badge-neutral  { background: var(--surface-3); color: var(--on-surface-2); }
+
+/* ── Forms ─── */
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block; font-size: 13px;
+  font-weight: 500; color: var(--on-surface);
+  margin-bottom: 6px;
+}
+
+.form-label span { color: var(--secondary); }
+
+.form-control {
+  width: 100%; padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font); font-size: 14px;
+  color: var(--on-surface); background: var(--surface);
+  outline: none; transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,115,232,.1);
+}
+
+.form-control::placeholder { color: var(--on-surface-3); }
+textarea.form-control { resize: vertical; min-height: 100px; }
+
+select.form-control { cursor: pointer; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+.form-hint { font-size: 12px; color: var(--on-surface-3); margin-top: 4px; }
+
+/* ── Modal ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(32,33,36,.6);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  transform: translateY(16px) scale(.98);
+  transition: transform .2s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: var(--shadow-3);
+}
+
+.modal-overlay.open .modal { transform: none; }
+.modal-lg { max-width: 720px; }
+
+.modal-header {
+  display: flex; align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 { font-size: 18px; font-weight: 500; flex: 1; }
+.modal-body { padding: 24px; }
+.modal-footer {
+  display: flex; justify-content: flex-end; gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Event cards ─── */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.event-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
+
+.event-cover {
+  height: 140px;
+  background: linear-gradient(135deg, var(--primary) 0%, #4285f4 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+.event-cover-icon { font-size: 48px; opacity: .3; color: white; }
+
+.event-cover-badge {
+  position: absolute; top: 12px; right: 12px;
+}
+
+.event-body { padding: 16px; }
+.event-title { font-weight: 600; font-size: 15px; margin-bottom: 8px; line-height: 1.3; }
+.event-meta  { display: flex; flex-direction: column; gap: 4px; }
+
+.event-meta-item {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--on-surface-2); font-size: 12px;
+}
+
+.event-meta-item .material-icons-round { font-size: 14px; }
+
+.event-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface-2);
+}
+
+.event-footer-stat { text-align: center; }
+.event-footer-stat strong { display: block; font-size: 16px; font-weight: 600; color: var(--on-surface); }
+.event-footer-stat span { font-size: 11px; color: var(--on-surface-3); }
+
+/* ── Chip / Filter tabs ─── */
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 16px; border-radius: 20px;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--surface); color: var(--on-surface-2);
+  transition: var(--transition);
+}
+
+.chip:hover { background: var(--surface-3); }
+.chip.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+
+/* ── Progress bar ─── */
+.progress { background: var(--surface-3); border-radius: 4px; height: 6px; overflow: hidden; }
+.progress-bar { height: 100%; background: var(--primary); border-radius: 4px; transition: width .6s; }
+.progress-bar.green  { background: var(--success); }
+.progress-bar.yellow { background: var(--warning); }
+
+/* ── Timeline / Activity ─── */
+.activity-list { display: flex; flex-direction: column; gap: 0; }
+
+.activity-item {
+  display: flex; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+
+.activity-content p { font-size: 13px; line-height: 1.4; }
+.activity-content small { color: var(--on-surface-3); font-size: 12px; }
+
+/* ── Checkin status cards ─── */
+.checkin-result {
+  padding: 24px; border-radius: var(--radius-lg);
+  text-align: center; display: none;
+}
+
+.checkin-result.valid   { background: #e6f4ea; border: 2px solid var(--success); }
+.checkin-result.invalid { background: #fce8e6; border: 2px solid var(--secondary); }
+.checkin-result.already { background: #fef7e0; border: 2px solid var(--warning); }
+
+.checkin-result .result-icon { font-size: 56px; margin-bottom: 12px; }
+.checkin-result h3 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.checkin-result p  { font-size: 14px; opacity: .8; }
+
+/* ── Toast ─── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 9999;
+}
+
+.toast {
+  display: flex; align-items: center; gap: 12px;
+  background: #323232; color: white;
+  padding: 12px 16px; border-radius: var(--radius-md);
+  font-size: 14px; min-width: 280px;
+  box-shadow: var(--shadow-2);
+  animation: slideIn .3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.toast.success { background: #137333; }
+.toast.error   { background: #c5221f; }
+.toast.warning { background: #b06000; }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+/* ── QR Display ─── */
+.qr-container {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  display: inline-block;
+}
+
+.qr-code {
+  width: 160px; height: 160px;
+  background: var(--surface-3);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 48px; color: var(--on-surface-3);
+}
+
+/* ── Empty state ─── */
+.empty-state {
+  text-align: center; padding: 60px 20px;
+  color: var(--on-surface-2);
+}
+
+.empty-state .material-icons-round {
+  font-size: 56px; color: var(--on-surface-3);
+  margin-bottom: 16px;
+}
+
+.empty-state h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+.empty-state p  { font-size: 14px; margin-bottom: 20px; }
+
+/* ── Tabs ─── */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; }
+
+.tab {
+  padding: 12px 20px; cursor: pointer;
+  font-size: 14px; font-weight: 500;
+  color: var(--on-surface-2);
+  border-bottom: 3px solid transparent;
+  transition: var(--transition);
+  margin-bottom: -1px;
+}
+
+.tab:hover { color: var(--primary); background: var(--primary-light); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+/* ── Divider ─── */
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+/* ── Inline actions ─── */
+.actions-cell { display: flex; gap: 4px; }
+
+/* ── Notification dot ─── */
+.notif-dot {
+  position: relative;
+}
+.notif-dot::after {
+  content: '';
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 8px; height: 8px;
+  background: var(--secondary);
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+}
+
+/* ── Chart placeholder ─── */
+.chart-placeholder {
+  height: 200px;
+  background: linear-gradient(to right,
+    rgba(26,115,232,.05) 0%,
+    rgba(26,115,232,.1) 50%,
+    rgba(26,115,232,.05) 100%
+  );
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-3); font-size: 13px;
+  position: relative; overflow: hidden;
+}
+
+.chart-bars {
+  display: flex; align-items: flex-end;
+  gap: 6px; height: 160px;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.chart-bar {
+  flex: 1; background: var(--primary);
+  border-radius: 3px 3px 0 0;
+  opacity: .7;
+  transition: opacity .2s;
+  min-height: 4px;
+}
+
+.chart-bar:hover { opacity: 1; }
+
+/* ── Misc ─── */
+.text-muted { color: var(--on-surface-2); }
+.text-small { font-size: 12px; }
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
+.mt-4 { margin-top: 4px; }
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.mb-16 { margin-bottom: 16px; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ═══ SIDEBAR ════════════════════════════════ -->
+  <aside class="sidebar">
+    <a class="sidebar-logo" href="#">
+      <div class="logo-icon">
+        <span class="material-icons-round">bolt</span>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">Evolyx Events</span>
+        <span class="logo-tag">Dashboard organisateur</span>
+      </div>
+    </a>
+
+    <div class="sidebar-section">
+      <div class="nav-item active" onclick="navigate('dashboard')">
+        <span class="material-icons-round">dashboard</span>
+        Tableau de bord
+      </div>
+      <div class="nav-item" onclick="navigate('events')">
+        <span class="material-icons-round">event</span>
+        Événements
+        <span class="badge">3</span>
+      </div>
+      <div class="nav-item" onclick="navigate('participants')">
+        <span class="material-icons-round">people</span>
+        Participants
+      </div>
+      <div class="nav-item" onclick="navigate('tickets')">
+        <span class="material-icons-round">confirmation_number</span>
+        Billetterie
+      </div>
+      <div class="nav-item" onclick="navigate('checkin')">
+        <span class="material-icons-round">qr_code_scanner</span>
+        Check-in
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Analyse</div>
+      <div class="nav-item" onclick="navigate('analytics')">
+        <span class="material-icons-round">bar_chart</span>
+        Analytics
+      </div>
+      <div class="nav-item" onclick="navigate('promos')">
+        <span class="material-icons-round">local_offer</span>
+        Codes promo
+      </div>
+    </div>
+
+    <div class="sidebar-section" style="margin-top:auto">
+      <div class="sidebar-label">Compte</div>
+      <div class="nav-item" onclick="navigate('settings')">
+        <span class="material-icons-round">settings</span>
+        Paramètres
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <span class="topbar-title" id="page-title">Tableau de bord</span>
+
+      <div class="search-box">
+        <span class="material-icons-round">search</span>
+        <input type="text" placeholder="Rechercher événements, participants...">
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn notif-dot" title="Notifications">
+          <span class="material-icons-round">notifications</span>
+        </button>
+        <button class="icon-btn" title="Aide">
+          <span class="material-icons-round">help_outline</span>
+        </button>
+        <div class="avatar" title="Chris Manuel">CM</div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- ═══ PAGE : DASHBOARD ════════════════════ -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Bonjour, Chris 👋</h1>
+            <p>Voici un aperçu de votre activité événementielle</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-create-event')">
+            <span class="material-icons-round">add</span>
+            Nouvel événement
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Événements actifs</p>
+              <h2>3</h2>
+              <small>↑ +1 ce mois</small>
+            </div>
+            <div class="stat-icon blue">
+              <span class="material-icons-round">event</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Inscriptions totales</p>
+              <h2>247</h2>
+              <small>↑ +38 cette semaine</small>
+            </div>
+            <div class="stat-icon green">
+              <span class="material-icons-round">people</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Revenus totaux</p>
+              <h2>1.2M</h2>
+              <small>XAF encaissés</small>
+            </div>
+            <div class="stat-icon yellow">
+              <span class="material-icons-round">payments</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Taux de présence</p>
+              <h2>78%</h2>
+              <small class="down">↓ -5% vs dernier</small>
+            </div>
+            <div class="stat-icon red">
+              <span class="material-icons-round">how_to_reg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Événements récents -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Événements récents</h3>
+              <button class="btn btn-text btn-sm" onclick="navigate('events')">Voir tout</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Événement</th>
+                    <th>Statut</th>
+                    <th>Inscrits</th>
+                    <th>Revenus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="fw-500">Gala Evolyx 2025</div>
+                      <div class="text-small text-muted">01 Déc · Yaoundé</div>
+                    </td>
+                    <td><span class="badge badge-success">Publié</span></td>
+                    <td>124</td>
+                    <td>620 000 XAF</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="fw-500">Forum Tech Afrique</div>
+                      <div class="text-small text-muted">15 Jan · Douala</div>
+                    </td>
+                    <td><span class="badge badge-info">Brouillon</span></td>
+                    <td>0</td>
+                    <td>—</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="fw-500">Startup Weekend</div>
+                      <div class="text-small text-muted">20 Fév · Bafoussam</div>
+                    </td>
+                    <td><span class="badge badge-success">Publié</span></td>
+                    <td>89</td>
+                    <td>445 000 XAF</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Activité récente -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Activité récente</h3>
+            </div>
+            <div class="card-body" style="padding-top:12px">
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#e8f0fe">👤</div>
+                  <div class="activity-content">
+                    <p><strong>Marie Kamga</strong> s'est inscrite au <strong>Gala Evolyx</strong></p>
+                    <small>Il y a 5 minutes</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#e6f4ea">💳</div>
+                  <div class="activity-content">
+                    <p>Paiement confirmé — <strong>5 000 XAF</strong> via Mobile Money</p>
+                    <small>Il y a 12 minutes</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#fce8e6">🎫</div>
+                  <div class="activity-content">
+                    <p><strong>EVX-VGGGFORRCI</strong> scanné au check-in</p>
+                    <small>Il y a 1 heure</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#fef7e0">📣</div>
+                  <div class="activity-content">
+                    <p>Événement <strong>Forum Tech Afrique</strong> créé</p>
+                    <small>Hier à 14h30</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#e8f0fe">📊</div>
+                  <div class="activity-content">
+                    <p>Export CSV de <strong>89 participants</strong> — Startup Weekend</p>
+                    <small>Hier à 10h15</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graphique -->
+        <div class="card mt-16">
+          <div class="card-header">
+            <h3>Inscriptions — 30 derniers jours</h3>
+            <div class="chips" style="margin-bottom:0">
+              <div class="chip active">30 jours</div>
+              <div class="chip">7 jours</div>
+              <div class="chip">3 mois</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-bars" id="chart-bars"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : ÉVÉNEMENTS ═══════════════════ -->
+      <div class="page" id="page-events">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Mes événements</h1>
+            <p>Gérez et suivez tous vos événements</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-create-event')">
+            <span class="material-icons-round">add</span>
+            Nouvel événement
+          </button>
+        </div>
+
+        <div class="chips">
+          <div class="chip active">Tous (3)</div>
+          <div class="chip">Publiés (2)</div>
+          <div class="chip">Brouillons (1)</div>
+          <div class="chip">Terminés (0)</div>
+        </div>
+
+        <div class="events-grid">
+          <!-- Event 1 -->
+          <div class="event-card" onclick="navigate('event-detail')">
+            <div class="event-cover" style="background:linear-gradient(135deg,#1a73e8,#4285f4)">
+              <span class="material-icons-round event-cover-icon">celebration</span>
+              <div class="event-cover-badge">
+                <span class="badge badge-success">Publié</span>
+              </div>
+            </div>
+            <div class="event-body">
+              <div class="event-title">Gala Evolyx 2025</div>
+              <div class="event-meta">
+                <div class="event-meta-item">
+                  <span class="material-icons-round">calendar_today</span>
+                  01 Déc 2025 · 18h00
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">location_on</span>
+                  Palais des Congrès, Tsinga · Yaoundé
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">confirmation_number</span>
+                  Entrée : 5 000 XAF · VIP : 15 000 XAF
+                </div>
+              </div>
+              <div class="mt-8">
+                <div class="flex-between mb-16" style="margin-bottom:4px">
+                  <small class="text-muted">124 / 500 inscrits</small>
+                  <small class="text-muted">25%</small>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar" style="width:25%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="event-footer">
+              <div class="event-footer-stat">
+                <strong>124</strong>
+                <span>Inscrits</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>96</strong>
+                <span>Confirmés</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>620K</strong>
+                <span>XAF</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 2 -->
+          <div class="event-card">
+            <div class="event-cover" style="background:linear-gradient(135deg,#34a853,#1e8e3e)">
+              <span class="material-icons-round event-cover-icon">laptop</span>
+              <div class="event-cover-badge">
+                <span class="badge badge-neutral">Brouillon</span>
+              </div>
+            </div>
+            <div class="event-body">
+              <div class="event-title">Forum Tech Afrique</div>
+              <div class="event-meta">
+                <div class="event-meta-item">
+                  <span class="material-icons-round">calendar_today</span>
+                  15 Jan 2026 · 09h00
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">location_on</span>
+                  Hôtel Akwa Palace · Douala
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">confirmation_number</span>
+                  Gratuit · VIP : 10 000 XAF
+                </div>
+              </div>
+              <div class="mt-8">
+                <div class="flex-between" style="margin-bottom:4px">
+                  <small class="text-muted">0 / 300 inscrits</small>
+                  <small class="text-muted">0%</small>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="event-footer">
+              <div class="event-footer-stat">
+                <strong>0</strong><span>Inscrits</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>0</strong><span>Confirmés</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>0</strong><span>XAF</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event 3 -->
+          <div class="event-card">
+            <div class="event-cover" style="background:linear-gradient(135deg,#ea4335,#d93025)">
+              <span class="material-icons-round event-cover-icon">rocket_launch</span>
+              <div class="event-cover-badge">
+                <span class="badge badge-success">Publié</span>
+              </div>
+            </div>
+            <div class="event-body">
+              <div class="event-title">Startup Weekend Bafoussam</div>
+              <div class="event-meta">
+                <div class="event-meta-item">
+                  <span class="material-icons-round">calendar_today</span>
+                  20 Fév 2026 · 08h00
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">location_on</span>
+                  CCI · Bafoussam
+                </div>
+                <div class="event-meta-item">
+                  <span class="material-icons-round">confirmation_number</span>
+                  Standard : 3 000 XAF
+                </div>
+              </div>
+              <div class="mt-8">
+                <div class="flex-between" style="margin-bottom:4px">
+                  <small class="text-muted">89 / 150 inscrits</small>
+                  <small class="text-muted">59%</small>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar green" style="width:59%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="event-footer">
+              <div class="event-footer-stat">
+                <strong>89</strong><span>Inscrits</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>72</strong><span>Confirmés</span>
+              </div>
+              <div class="event-footer-stat">
+                <strong>267K</strong><span>XAF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : PARTICIPANTS ══════════════════ -->
+      <div class="page" id="page-participants">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Participants</h1>
+            <p>213 participants au total</p>
+          </div>
+          <div class="flex gap-8">
+            <button class="btn btn-outlined" onclick="showToast('Export CSV en cours...','success')">
+              <span class="material-icons-round">download</span>
+              Exporter CSV
+            </button>
+            <button class="btn btn-primary" onclick="openModal('modal-add-participant')">
+              <span class="material-icons-round">person_add</span>
+              Ajouter
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="chips" style="margin-bottom:0">
+              <div class="chip active">Tous</div>
+              <div class="chip">Confirmés</div>
+              <div class="chip">En attente</div>
+              <div class="chip">Présents</div>
+            </div>
+            <div class="search-box" style="width:220px">
+              <span class="material-icons-round">search</span>
+              <input type="text" placeholder="Rechercher...">
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Participant</th>
+                  <th>Événement</th>
+                  <th>Billet</th>
+                  <th>Montant</th>
+                  <th>Statut</th>
+                  <th>Présence</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="flex-center gap-8">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px;background:#34a853">MK</div>
+                      <div>
+                        <div class="fw-500">Marie Kamga</div>
+                        <div class="text-small text-muted">marie@test.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Gala Evolyx 2025</td>
+                  <td>Entrée générale</td>
+                  <td>4 000 XAF</td>
+                  <td><span class="badge badge-success">Confirmé</span></td>
+                  <td><span class="badge badge-neutral">Non présent</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" title="Voir billet" onclick="openModal('modal-ticket')">
+                        <span class="material-icons-round">qr_code</span>
+                      </button>
+                      <button class="icon-btn" title="Confirmer" onclick="showToast('Paiement confirmé','success')">
+                        <span class="material-icons-round">check_circle</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex-center gap-8">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px">CM</div>
+                      <div>
+                        <div class="fw-500">Chris Manuel</div>
+                        <div class="text-small text-muted">chris@evolyx.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Gala Evolyx 2025</td>
+                  <td>VIP</td>
+                  <td>15 000 XAF</td>
+                  <td><span class="badge badge-warning">En attente</span></td>
+                  <td><span class="badge badge-neutral">Non présent</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="openModal('modal-ticket')">
+                        <span class="material-icons-round">qr_code</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Paiement confirmé','success')">
+                        <span class="material-icons-round">check_circle</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="flex-center gap-8">
+                      <div class="avatar" style="width:32px;height:32px;font-size:12px;background:#ea4335">PN</div>
+                      <div>
+                        <div class="fw-500">Paul Nkembi</div>
+                        <div class="text-small text-muted">paul@test.cm</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>Startup Weekend</td>
+                  <td>Standard</td>
+                  <td>3 000 XAF</td>
+                  <td><span class="badge badge-success">Confirmé</span></td>
+                  <td><span class="badge badge-success">Présent ✓</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="openModal('modal-ticket')">
+                        <span class="material-icons-round">qr_code</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Inscription annulée','error')">
+                        <span class="material-icons-round">cancel</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <div class="flex-between">
+              <span class="text-muted text-small">Affichage 1–3 sur 213</span>
+              <div class="flex gap-8">
+                <button class="btn btn-outlined btn-sm">Précédent</button>
+                <button class="btn btn-outlined btn-sm">Suivant</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : BILLETTERIE ═══════════════════ -->
+      <div class="page" id="page-tickets">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Billetterie</h1>
+            <p>Gérez les types de billets par événement</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-create-ticket')">
+            <span class="material-icons-round">add</span>
+            Nouveau billet
+          </button>
+        </div>
+
+        <div class="card mb-16">
+          <div class="card-header">
+            <h3>Gala Evolyx 2025</h3>
+            <span class="badge badge-success">Publié</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Type de billet</th>
+                  <th>Prix</th>
+                  <th>Quantité</th>
+                  <th>Vendus</th>
+                  <th>Restants</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="fw-500">Entrée générale</div>
+                    <div class="text-small text-muted">Accès salle principale</div>
+                  </td>
+                  <td>5 000 XAF</td>
+                  <td>200</td>
+                  <td>
+                    <div>124</div>
+                    <div class="progress mt-4" style="width:80px">
+                      <div class="progress-bar" style="width:62%"></div>
+                    </div>
+                  </td>
+                  <td>76</td>
+                  <td><span class="badge badge-success">Actif</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="openModal('modal-create-ticket')">
+                        <span class="material-icons-round">edit</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Billet désactivé','warning')">
+                        <span class="material-icons-round">toggle_off</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="fw-500">VIP</div>
+                    <div class="text-small text-muted">Accès lounge + repas</div>
+                  </td>
+                  <td>15 000 XAF</td>
+                  <td>50</td>
+                  <td>
+                    <div>32</div>
+                    <div class="progress mt-4" style="width:80px">
+                      <div class="progress-bar yellow" style="width:64%"></div>
+                    </div>
+                  </td>
+                  <td>18</td>
+                  <td><span class="badge badge-success">Actif</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="openModal('modal-create-ticket')">
+                        <span class="material-icons-round">edit</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Billet désactivé','warning')">
+                        <span class="material-icons-round">toggle_off</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : CHECK-IN ══════════════════════ -->
+      <div class="page" id="page-checkin">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Check-in</h1>
+            <p>Scanner et valider les billets à l'entrée</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Scanner -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Scanner un billet</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Événement</label>
+                <select class="form-control">
+                  <option>Gala Evolyx 2025</option>
+                  <option>Startup Weekend Bafoussam</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Code billet</label>
+                <input type="text" class="form-control" id="scan-input"
+                  placeholder="EVX-XXXXXXXXXX"
+                  style="font-family:monospace;font-size:16px;letter-spacing:2px;text-transform:uppercase"
+                  oninput="this.value=this.value.toUpperCase()">
+                <div class="form-hint">Entrez manuellement ou scannez le QR code</div>
+              </div>
+              <button class="btn btn-primary" style="width:100%" onclick="simulateScan()">
+                <span class="material-icons-round">qr_code_scanner</span>
+                Valider l'entrée
+              </button>
+
+              <div class="divider"></div>
+
+              <!-- Résultats -->
+              <div class="checkin-result valid" id="result-valid">
+                <div class="result-icon">✅</div>
+                <h3 style="color:#137333">Entrée validée !</h3>
+                <p id="result-name" style="color:#137333"></p>
+                <p id="result-ticket" style="color:#137333;margin-top:4px"></p>
+              </div>
+
+              <div class="checkin-result already" id="result-already">
+                <div class="result-icon">⚠️</div>
+                <h3 style="color:#b06000">Déjà scanné</h3>
+                <p style="color:#b06000">Ce billet a déjà été utilisé</p>
+              </div>
+
+              <div class="checkin-result invalid" id="result-invalid">
+                <div class="result-icon">❌</div>
+                <h3 style="color:#c5221f">Billet invalide</h3>
+                <p style="color:#c5221f">Code introuvable ou annulé</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats temps réel -->
+          <div>
+            <div class="card mb-16">
+              <div class="card-header">
+                <h3>Stats en temps réel</h3>
+                <span class="badge badge-success" style="display:flex;align-items:center;gap:4px">
+                  <span style="width:6px;height:6px;background:var(--success);border-radius:50%;display:inline-block"></span>
+                  Live
+                </span>
+              </div>
+              <div class="card-body">
+                <div class="stats-grid" style="grid-template-columns:1fr 1fr;gap:12px">
+                  <div style="text-align:center;padding:16px;background:var(--surface-2);border-radius:var(--radius-md)">
+                    <div style="font-size:32px;font-weight:600;color:var(--primary)">96</div>
+                    <div class="text-muted text-small">Confirmés</div>
+                  </div>
+                  <div style="text-align:center;padding:16px;background:#e6f4ea;border-radius:var(--radius-md)">
+                    <div style="font-size:32px;font-weight:600;color:var(--success)">43</div>
+                    <div class="text-muted text-small">Présents</div>
+                  </div>
+                  <div style="text-align:center;padding:16px;background:var(--surface-2);border-radius:var(--radius-md)">
+                    <div style="font-size:32px;font-weight:600;color:var(--on-surface-2)">53</div>
+                    <div class="text-muted text-small">En attente</div>
+                  </div>
+                  <div style="text-align:center;padding:16px;background:#e8f0fe;border-radius:var(--radius-md)">
+                    <div style="font-size:32px;font-weight:600;color:var(--primary)">45%</div>
+                    <div class="text-muted text-small">Taux présence</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Derniers scans -->
+            <div class="card">
+              <div class="card-header"><h3>Derniers scans</h3></div>
+              <div class="activity-list" style="padding:0 16px">
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#e6f4ea;font-size:16px">✅</div>
+                  <div class="activity-content">
+                    <p><strong>Paul Nkembi</strong> — Entrée générale</p>
+                    <small>EVX-ABC123 · il y a 2 min</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#e6f4ea;font-size:16px">✅</div>
+                  <div class="activity-content">
+                    <p><strong>Sophie Mba</strong> — VIP</p>
+                    <small>EVX-XYZ789 · il y a 5 min</small>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:#fce8e6;font-size:16px">❌</div>
+                  <div class="activity-content">
+                    <p><strong>Billet invalide</strong></p>
+                    <small>EVX-000000 · il y a 8 min</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : ANALYTICS ═════════════════════ -->
+      <div class="page" id="page-analytics">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Analytics</h1>
+            <p>Analyse détaillée de vos événements</p>
+          </div>
+          <select class="form-control" style="width:220px">
+            <option>Tous les événements</option>
+            <option>Gala Evolyx 2025</option>
+            <option>Startup Weekend</option>
+          </select>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Taux de conversion</p>
+              <h2>84%</h2>
+              <small>Vues → Inscrits</small>
+            </div>
+            <div class="stat-icon blue">
+              <span class="material-icons-round">trending_up</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Revenu moyen / billet</div>
+              <h2>5.2K</h2>
+              <small>XAF par billet</small>
+            </div>
+            <div class="stat-icon green">
+              <span class="material-icons-round">payments</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Codes promo utilisés</p>
+              <h2>34</h2>
+              <small>↑ +12 ce mois</small>
+            </div>
+            <div class="stat-icon yellow">
+              <span class="material-icons-round">local_offer</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <p>Taux de présence</p>
+              <h2>78%</h2>
+              <small>Inscrits présents</small>
+            </div>
+            <div class="stat-icon red">
+              <span class="material-icons-round">how_to_reg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><h3>Revenus par canal de paiement</h3></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div>
+                  <div class="flex-between mb-16" style="margin-bottom:6px">
+                    <span class="flex-center gap-8">
+                      <span style="width:12px;height:12px;background:var(--primary);border-radius:2px;display:inline-block"></span>
+                      Mobile Money (MTN/Orange)
+                    </span>
+                    <strong>62%</strong>
+                  </div>
+                  <div class="progress"><div class="progress-bar" style="width:62%"></div></div>
+                </div>
+                <div>
+                  <div class="flex-between mb-16" style="margin-bottom:6px">
+                    <span class="flex-center gap-8">
+                      <span style="width:12px;height:12px;background:var(--success);border-radius:2px;display:inline-block"></span>
+                      Carte bancaire (Stripe)
+                    </span>
+                    <strong>23%</strong>
+                  </div>
+                  <div class="progress"><div class="progress-bar green" style="width:23%"></div></div>
+                </div>
+                <div>
+                  <div class="flex-between mb-16" style="margin-bottom:6px">
+                    <span class="flex-center gap-8">
+                      <span style="width:12px;height:12px;background:var(--warning);border-radius:2px;display:inline-block"></span>
+                      Manuel (cash/virement)
+                    </span>
+                    <strong>15%</strong>
+                  </div>
+                  <div class="progress"><div class="progress-bar yellow" style="width:15%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Inscriptions par type de billet</h3></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <div class="flex-between">
+                  <div>
+                    <div class="fw-500">Entrée générale</div>
+                    <div class="text-small text-muted">5 000 XAF</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="fw-600">124 vendus</div>
+                    <div class="text-small text-muted">620 000 XAF</div>
+                  </div>
+                </div>
+                <div class="flex-between">
+                  <div>
+                    <div class="fw-500">VIP</div>
+                    <div class="text-small text-muted">15 000 XAF</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="fw-600">32 vendus</div>
+                    <div class="text-small text-muted">480 000 XAF</div>
+                  </div>
+                </div>
+                <div class="divider" style="margin:4px 0"></div>
+                <div class="flex-between">
+                  <strong>Total</strong>
+                  <strong>1 100 000 XAF</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : CODES PROMO ═══════════════════ -->
+      <div class="page" id="page-promos">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Codes promo</h1>
+            <p>Gérez les réductions pour vos événements</p>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-create-promo')">
+            <span class="material-icons-round">add</span>
+            Nouveau code
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Événement</th>
+                  <th>Réduction</th>
+                  <th>Utilisations</th>
+                  <th>Expiration</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code style="background:var(--surface-3);padding:3px 8px;border-radius:4px;font-size:13px">EARLY20</code></td>
+                  <td>Gala Evolyx 2025</td>
+                  <td>20%</td>
+                  <td>
+                    <div>18 / 50</div>
+                    <div class="progress mt-4" style="width:80px">
+                      <div class="progress-bar" style="width:36%"></div>
+                    </div>
+                  </td>
+                  <td>31 Nov 2025</td>
+                  <td><span class="badge badge-success">Actif</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="showToast('Code désactivé','warning')">
+                        <span class="material-icons-round">toggle_off</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Code supprimé','error')">
+                        <span class="material-icons-round">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code style="background:var(--surface-3);padding:3px 8px;border-radius:4px;font-size:13px">VIP5000</code></td>
+                  <td>Gala Evolyx 2025</td>
+                  <td>5 000 XAF</td>
+                  <td>
+                    <div>5 / 20</div>
+                    <div class="progress mt-4" style="width:80px">
+                      <div class="progress-bar green" style="width:25%"></div>
+                    </div>
+                  </td>
+                  <td>—</td>
+                  <td><span class="badge badge-success">Actif</span></td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="icon-btn" onclick="showToast('Code désactivé','warning')">
+                        <span class="material-icons-round">toggle_off</span>
+                      </button>
+                      <button class="icon-btn" onclick="showToast('Code supprimé','error')">
+                        <span class="material-icons-round">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE : PARAMÈTRES ════════════════════ -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1>Paramètres</h1>
+            <p>Gérez votre compte et vos préférences</p>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this,'tab-profile')">Profil</div>
+          <div class="tab" onclick="switchTab(this,'tab-org')">Organisation</div>
+          <div class="tab" onclick="switchTab(this,'tab-security')">Sécurité</div>
+        </div>
+
+        <div id="tab-profile">
+          <div class="card" style="max-width:600px">
+            <div class="card-header"><h3>Informations personnelles</h3></div>
+            <div class="card-body">
+              <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px">
+                <div class="avatar" style="width:72px;height:72px;font-size:24px">CM</div>
+                <div>
+                  <button class="btn btn-outlined btn-sm">Changer la photo</button>
+                  <div class="text-small text-muted mt-4">JPG ou PNG, max 2MB</div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Prénom</label>
+                  <input type="text" class="form-control" value="Chris">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Nom</label>
+                  <input type="text" class="form-control" value="Manuel">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" value="chris@evolyx.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Téléphone (WhatsApp)</label>
+                <input type="tel" class="form-control" value="+237 699 000 000">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Devise</label>
+                  <select class="form-control">
+                    <option selected>XAF — Franc CFA (CEMAC)</option>
+                    <option>XOF — Franc CFA (UEMOA)</option>
+                    <option>EUR — Euro</option>
+                    <option>USD — Dollar</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Fuseau horaire</label>
+                  <select class="form-control">
+                    <option selected>Africa/Douala (GMT+1)</option>
+                    <option>Africa/Abidjan (GMT+0)</option>
+                    <option>Africa/Dakar (GMT+0)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer" style="display:flex;justify-content:flex-end">
+              <button class="btn btn-primary" onclick="showToast('Profil mis à jour','success')">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-org" style="display:none">
+          <div class="card" style="max-width:600px">
+            <div class="card-header"><h3>Mon organisation</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Nom de l'organisation</label>
+                <input type="text" class="form-control" value="Evolyx Events">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Slug (URL publique)</label>
+                <div style="display:flex;align-items:center;border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden">
+                  <span style="padding:10px 12px;background:var(--surface-2);color:var(--on-surface-3);font-size:13px;white-space:nowrap">evolyx.events/</span>
+                  <input type="text" style="border:none;outline:none;padding:10px 12px;font-family:var(--font);font-size:14px;width:100%" value="evolyx-events-xxx">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pays</label>
+                <select class="form-control">
+                  <option selected>🇨🇲 Cameroun</option>
+                  <option>🇨🇮 Côte d'Ivoire</option>
+                  <option>🇸🇳 Sénégal</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-footer" style="display:flex;justify-content:flex-end">
+              <button class="btn btn-primary" onclick="showToast('Organisation mise à jour','success')">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-security" style="display:none">
+          <div class="card" style="max-width:600px">
+            <div class="card-header"><h3>Changer le mot de passe</h3></div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Mot de passe actuel <span>*</span></label>
+                <input type="password" class="form-control" placeholder="••••••••">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nouveau mot de passe <span>*</span></label>
+                <input type="password" class="form-control" placeholder="••••••••">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirmer le mot de passe <span>*</span></label>
+                <input type="password" class="form-control" placeholder="••••••••">
+              </div>
+            </div>
+            <div class="card-footer" style="display:flex;justify-content:flex-end">
+              <button class="btn btn-primary" onclick="showToast('Mot de passe mis à jour','success')">
+                Mettre à jour
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══ MODALS ═══════════════════════════════════ -->
+
+<!-- Modal : Créer événement -->
+<div class="modal-overlay" id="modal-create-event">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3>Créer un événement</h3>
+      <button class="icon-btn" onclick="closeModal('modal-create-event')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Titre <span>*</span></label>
+        <input type="text" class="form-control" placeholder="Ex: Gala Annuel 2025">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" placeholder="Décrivez votre événement..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Date de début <span>*</span></label>
+          <input type="datetime-local" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date de fin <span>*</span></label>
+          <input type="datetime-local" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type de lieu</label>
+        <select class="form-control">
+          <option>Physique</option>
+          <option>En ligne</option>
+          <option>Hybride</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Adresse</label>
+          <input type="text" class="form-control" placeholder="Palais des Congrès">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quartier / Repère</label>
+          <input type="text" class="form-control" placeholder="Tsinga, face au ministère...">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ville</label>
+          <input type="text" class="form-control" placeholder="Yaoundé">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Capacité maximale</label>
+          <input type="number" class="form-control" placeholder="500">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outlined" onclick="closeModal('modal-create-event')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-create-event');showToast('Événement créé en brouillon','success')">
+        Créer l'événement
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal : Créer billet -->
+<div class="modal-overlay" id="modal-create-ticket">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nouveau type de billet</h3>
+      <button class="icon-btn" onclick="closeModal('modal-create-ticket')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nom du billet <span>*</span></label>
+        <input type="text" class="form-control" placeholder="Ex: Entrée générale, VIP...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-control" placeholder="Ex: Accès salle principale + cocktail">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Prix <span>*</span></label>
+          <input type="number" class="form-control" placeholder="0 = gratuit">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantité disponible</label>
+          <input type="number" class="form-control" placeholder="Vide = illimité">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Début de vente</label>
+          <input type="datetime-local" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fin de vente</label>
+          <input type="datetime-local" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outlined" onclick="closeModal('modal-create-ticket')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-create-ticket');showToast('Type de billet créé','success')">
+        Créer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal : Créer promo -->
+<div class="modal-overlay" id="modal-create-promo">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nouveau code promo</h3>
+      <button class="icon-btn" onclick="closeModal('modal-create-promo')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Code <span>*</span></label>
+        <input type="text" class="form-control" placeholder="EARLY20" style="text-transform:uppercase;font-family:monospace">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Type de réduction</label>
+          <select class="form-control">
+            <option>Pourcentage (%)</option>
+            <option>Montant fixe (XAF)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valeur <span>*</span></label>
+          <input type="number" class="form-control" placeholder="20">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Nb max d'utilisations</label>
+          <input type="number" class="form-control" placeholder="Illimité">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date d'expiration</label>
+          <input type="date" class="form-control">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outlined" onclick="closeModal('modal-create-promo')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-create-promo');showToast('Code promo créé','success')">
+        Créer
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal : Voir billet -->
+<div class="modal-overlay" id="modal-ticket">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Billet numérique</h3>
+      <button class="icon-btn" onclick="closeModal('modal-ticket')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <div style="background:var(--surface-2);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px">
+        <div class="qr-container" style="display:inline-block">
+          <div class="qr-code">
+            <span class="material-icons-round" style="font-size:80px;color:var(--on-surface)">qr_code_2</span>
+          </div>
+          <div style="font-family:monospace;font-size:16px;letter-spacing:2px;font-weight:600">EVX-VGGGFORRCI</div>
+        </div>
+        <div class="mt-16">
+          <div style="font-size:18px;font-weight:600">Marie Kamga</div>
+          <div class="text-muted">Entrée générale · Gala Evolyx 2025</div>
+          <div class="text-muted text-small mt-4">01 Déc 2025 · Palais des Congrès, Yaoundé</div>
+        </div>
+      </div>
+      <span class="badge badge-success" style="font-size:13px;padding:6px 16px">✓ Confirmé · 4 000 XAF payés</span>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outlined" onclick="closeModal('modal-ticket')">Fermer</button>
+      <button class="btn btn-primary" onclick="showToast('Billet envoyé par email','success')">
+        <span class="material-icons-round">email</span>
+        Renvoyer par email
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal : Ajouter participant -->
+<div class="modal-overlay" id="modal-add-participant">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Ajouter un participant</h3>
+      <button class="icon-btn" onclick="closeModal('modal-add-participant')">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Prénom <span>*</span></label>
+          <input type="text" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nom <span>*</span></label>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email <span>*</span></label>
+        <input type="email" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input type="tel" class="form-control" placeholder="+237 6XX XXX XXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type de billet <span>*</span></label>
+        <select class="form-control">
+          <option>Entrée générale — 5 000 XAF</option>
+          <option>VIP — 15 000 XAF</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Référence paiement</label>
+        <input type="text" class="form-control" placeholder="Ex: CASH-001, MTN-REF-XXX">
+        <div class="form-hint">Laissez vide pour une inscription sans paiement</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outlined" onclick="closeModal('modal-add-participant')">Annuler</button>
+      <button class="btn btn-primary" onclick="closeModal('modal-add-participant');showToast('Participant ajouté et billet envoyé','success')">
+        Ajouter et envoyer billet
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ═══ NAVIGATION ═══════════════════════════════════
+const pageTitles = {
+  dashboard:    'Tableau de bord',
+  events:       'Mes événements',
+  participants: 'Participants',
+  tickets:      'Billetterie',
+  checkin:      'Check-in',
+  analytics:    'Analytics',
+  promos:       'Codes promo',
+  settings:     'Paramètres',
+};
+
+function navigate(pageId) {
+  // Désactiver tous les nav items
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+  // Masquer toutes les pages
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+
+  // Activer la page
+  const page = document.getElementById(`page-${pageId}`);
+  if (page) {
+    page.classList.add('active');
+    document.getElementById('page-title').textContent = pageTitles[pageId] || pageId;
+  }
+
+  // Activer le nav item correspondant
+  document.querySelectorAll('.nav-item').forEach(el => {
+    if (el.getAttribute('onclick')?.includes(`'${pageId}'`)) {
+      el.classList.add('active');
+    }
+  });
+}
+
+// ═══ MODALS ══════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Fermer modal en cliquant à l'extérieur
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// ═══ TOAST ════════════════════════════════════════
+function showToast(message, type = 'default') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+
+  const icons = {
+    success: 'check_circle',
+    error:   'error',
+    warning: 'warning',
+    default: 'info',
+  };
+
+  toast.innerHTML = `
+    <span class="material-icons-round" style="font-size:18px">${icons[type] || icons.default}</span>
+    ${message}
+  `;
+
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'slideIn .3s reverse';
+    setTimeout(() => toast.remove(), 280);
+  }, 3000);
+}
+
+// ═══ TABS ═════════════════════════════════════════
+function switchTab(el, tabId) {
+  // Désactiver tous les tabs
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // Masquer tous les contenus
+  ['tab-profile', 'tab-org', 'tab-security'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+
+  // Afficher le tab sélectionné
+  const tab = document.getElementById(tabId);
+  if (tab) tab.style.display = 'block';
+}
+
+// ═══ CHECK-IN SIMULATION ══════════════════════════
+const validCodes = {
+  'EVX-VGGGFORRCI': { name: 'Chris Manuel', ticket: 'Entrée générale', used: false },
+  'EVX-NEBS155X8V': { name: 'Marie Kamga',  ticket: 'Entrée générale', used: false },
+};
+
+function simulateScan() {
+  const code = document.getElementById('scan-input').value.trim().toUpperCase();
+
+  // Cacher tous les résultats
+  ['result-valid', 'result-already', 'result-invalid'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+
+  if (!code) {
+    showToast('Entrez un code billet', 'warning');
+    return;
+  }
+
+  if (validCodes[code]) {
+    const entry = validCodes[code];
+    if (entry.used) {
+      document.getElementById('result-already').style.display = 'block';
+    } else {
+      entry.used = true;
+      document.getElementById('result-name').textContent = entry.name;
+      document.getElementById('result-ticket').textContent = entry.ticket;
+      document.getElementById('result-valid').style.display = 'block';
+      showToast(`Entrée validée — ${entry.name}`, 'success');
+    }
+  } else {
+    document.getElementById('result-invalid').style.display = 'block';
+  }
+}
+
+// ═══ CHART ════════════════════════════════════════
+function buildChart() {
+  const container = document.getElementById('chart-bars');
+  if (!container) return;
+
+  const values = [4,7,3,9,12,8,15,11,6,18,14,9,22,17,13,25,19,16,28,21,18,30,24,20,35,27,22,38,31,26];
+  const max = Math.max(...values);
+
+  container.innerHTML = values.map(v =>
+    `<div class="chart-bar" style="height:${(v/max)*100}%" title="${v} inscriptions"></div>`
+  ).join('');
+}
+
+// ═══ CHIPS ════════════════════════════════════════
+document.querySelectorAll('.chips').forEach(group => {
+  group.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+});
+
+// ═══ INIT ═════════════════════════════════════════
+buildChart();
+</script>
+</body>
+</html>

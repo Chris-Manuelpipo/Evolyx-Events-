@@ -26,13 +26,24 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.use('/public',                                require('./routes/public'));
+
+
 // ── Routes API ───────────────────────────────────
 app.use("/api/auth",         authLimiter,         require("./routes/auth"));
-app.use("/api/events",                            require("./routes/events"));
+
+app.use('/api/events/:id/members', require('./routes/members'));
+app.use('/api/invitations',        require('./routes/invitations'));
 app.use("/api/events/:eventId/tickets",           require("./routes/tickets"));
 app.use("/api/events/:eventId/registrations",     registrationLimiter, require("./routes/registrations"));
+
+
+app.use("/api/events",                            require("./routes/events"));
+
 app.use("/api/checkin",                           require("./routes/checkin"));
 app.use("/api/dashboard",                         require("./routes/dashboard"));
+
+app.use('/api/payments', require('./routes/payments'));
 
 // ── Gestion des erreurs ──────────────────────────
 app.use(notFound);

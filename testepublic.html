@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evolyx Events — Découvrez des événements</title>
+<meta name="description" content="Trouvez et inscrivez-vous aux meilleurs événements près de chez vous.">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Google+Sans+Display:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+:root{
+  --p:#1a73e8;--pd:#1557b0;--pl:#e8f0fe;--s:#ea4335;--ok:#34a853;--w:#fbbc04;
+  --surf:#fff;--s2:#f8f9fa;--s3:#f1f3f4;--tx:#202124;--tx2:#5f6368;--tx3:#9aa0a6;--bd:#e8eaed;
+  --sh1:0 1px 2px rgba(60,64,67,.3),0 1px 3px 1px rgba(60,64,67,.15);
+  --sh2:0 1px 3px rgba(60,64,67,.3),0 4px 8px 3px rgba(60,64,67,.15);
+  --sh3:0 2px 6px rgba(60,64,67,.3),0 6px 20px 4px rgba(60,64,67,.15);
+  --f:'Google Sans',sans-serif;--fd:'Google Sans Display',sans-serif;--t:all .2s cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);color:var(--tx);font-size:14px;line-height:1.5;background:var(--s2)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav{background:var(--surf);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--fd);font-weight:700;font-size:18px}
+.nav-logo-i{width:36px;height:36px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.nav-logo-i .mi{color:white;font-size:20px}
+.nav-search{flex:1;max-width:500px;display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--bd);border-radius:24px;padding:8px 16px;transition:var(--t)}
+.nav-search:focus-within{background:var(--surf);border-color:var(--p);box-shadow:0 0 0 3px rgba(26,115,232,.1)}
+.nav-search input{border:none;background:none;font-family:var(--f);font-size:14px;color:var(--tx);outline:none;width:100%}
+.nav-search .mi{color:var(--tx3);font-size:18px;flex-shrink:0}
+.nav-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:38px;border-radius:24px;font-family:var(--f);font-size:14px;font-weight:500;cursor:pointer;border:none;transition:var(--t);white-space:nowrap}
+.btn-p{background:var(--p);color:white}.btn-p:hover{background:var(--pd)}
+.btn-o{background:none;color:var(--p);border:1px solid var(--bd)}.btn-o:hover{background:var(--pl)}
+.btn .mi{font-size:18px}
+.btn-sm{height:32px;padding:0 14px;font-size:13px}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#1a73e8 0%,#0d47a1 100%);color:white;padding:64px 24px;text-align:center}
+.hero h1{font-family:var(--fd);font-size:40px;font-weight:700;margin-bottom:12px;line-height:1.2}
+.hero p{font-size:18px;opacity:.85;margin-bottom:32px}
+.hero-search{background:var(--surf);border-radius:48px;display:flex;align-items:center;max-width:640px;margin:0 auto;overflow:hidden;box-shadow:var(--sh3)}
+.hero-search input{flex:1;padding:16px 24px;border:none;font-family:var(--f);font-size:16px;color:var(--tx);outline:none}
+.hero-search button{background:var(--p);color:white;border:none;padding:0 28px;height:56px;font-family:var(--f);font-size:15px;font-weight:600;cursor:pointer;transition:var(--t)}
+.hero-search button:hover{background:var(--pd)}
+.hero-cities{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.city-chip{background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:20px;font-size:13px;cursor:pointer;transition:var(--t)}
+.city-chip:hover{background:rgba(255,255,255,.25)}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:32px 24px}
+.section-title{font-family:var(--fd);font-size:22px;font-weight:500;margin-bottom:20px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.filter-chip{display:inline-flex;align-items:center;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--bd);background:var(--surf);color:var(--tx2);transition:var(--t)}
+.filter-chip:hover{background:var(--s3)}
+.filter-chip.on{background:var(--pl);color:var(--p);border-color:var(--p)}
+
+/* EVENT GRID */
+.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.eg{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.eg{grid-template-columns:1fr}}
+.ec{background:var(--surf);border-radius:12px;overflow:hidden;cursor:pointer;transition:var(--t);border:1px solid var(--bd)}
+.ec:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.ec-cover{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ec-cover .mi{font-size:64px;opacity:.25;color:white}
+.ec-cover-badge{position:absolute;top:12px;left:12px}
+.ec-cover-price{position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,.6);color:white;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:600;backdrop-filter:blur(4px)}
+.ec-body{padding:16px}
+.ec-title{font-weight:600;font-size:16px;margin-bottom:10px;line-height:1.3}
+.ec-meta{display:flex;flex-direction:column;gap:5px}
+.ec-mi{display:flex;align-items:center;gap:6px;color:var(--tx2);font-size:13px}
+.ec-mi .mi{font-size:15px;color:var(--tx3)}
+.ec-footer{padding:12px 16px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.ec-org{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2)}
+.ec-org-av{width:24px;height:24px;border-radius:50%;background:var(--p);color:white;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.b-ok{background:#e6f4ea;color:#137333}
+.b-free{background:#e8f0fe;color:#1557b0}
+.b-full{background:#fce8e6;color:#c5221f}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;gap:8px;margin-top:32px}
+.pg-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--bd);background:var(--surf);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:var(--f);font-size:14px;transition:var(--t)}
+.pg-btn:hover{background:var(--pl);color:var(--p);border-color:var(--p)}
+.pg-btn.on{background:var(--p);color:white;border-color:var(--p)}
+.pg-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* DETAIL PAGE */
+.detail{display:none;max-width:1100px;margin:0 auto;padding:32px 24px}
+.detail-cover{height:360px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:32px;position:relative}
+.detail-cover .mi{font-size:96px;opacity:.2;color:white}
+.detail-grid{display:grid;grid-template-columns:1fr 380px;gap:32px}
+@media(max-width:800px){.detail-grid{grid-template-columns:1fr}}
+.detail-title{font-family:var(--fd);font-size:32px;font-weight:700;margin-bottom:16px;line-height:1.2}
+.detail-meta{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;padding:20px;background:var(--s2);border-radius:12px}
+.detail-mi{display:flex;align-items:flex-start;gap:10px;font-size:14px}
+.detail-mi .mi{font-size:20px;color:var(--p);flex-shrink:0;margin-top:1px}
+.detail-desc{font-size:15px;line-height:1.7;color:var(--tx2);white-space:pre-wrap}
+.detail-org{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--bd);border-radius:12px;margin-top:24px;cursor:pointer;transition:var(--t)}
+.detail-org:hover{border-color:var(--p);background:var(--pl)}
+.detail-org-av{width:48px;height:48px;border-radius:50%;background:var(--p);color:white;font-size:18px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* BOOKING CARD */
+.bcard{background:var(--surf);border-radius:12px;border:1px solid var(--bd);overflow:hidden;position:sticky;top:88px;box-shadow:var(--sh1)}
+.bcard-header{padding:20px;border-bottom:1px solid var(--bd);background:var(--p);color:white}
+.bcard-header h3{font-size:18px;font-weight:600;margin-bottom:4px}
+.bcard-header p{font-size:13px;opacity:.85}
+.bcard-body{padding:20px}
+.ticket-option{border:2px solid var(--bd);border-radius:10px;padding:14px 16px;margin-bottom:12px;cursor:pointer;transition:var(--t)}
+.ticket-option:hover{border-color:var(--p);background:var(--pl)}
+.ticket-option.selected{border-color:var(--p);background:var(--pl)}
+.ticket-option.unavailable{opacity:.5;cursor:not-allowed;background:var(--s2)}
+.ticket-top{display:flex;justify-content:space-between;align-items:flex-start}
+.ticket-name{font-weight:600;font-size:15px}
+.ticket-price{font-size:18px;font-weight:700;color:var(--p)}
+.ticket-price.free{color:var(--ok)}
+.ticket-desc{font-size:12px;color:var(--tx2);margin-top:4px}
+.ticket-remaining{font-size:11px;color:var(--w);margin-top:4px;font-weight:500}
+
+/* FORM */
+.fg{margin-bottom:16px}
+.fl{display:block;font-size:13px;font-weight:500;margin-bottom:5px}
+.fl span{color:var(--s)}
+.fc{width:100%;padding:10px 14px;border:1px solid var(--bd);border-radius:8px;font-family:var(--f);font-size:14px;color:var(--tx);background:var(--surf);outline:none;transition:var(--t)}
+.fc:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(26,115,232,.1)}
+.fc::placeholder{color:var(--tx3)}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.promo-row{display:flex;gap:8px}
+.promo-row .fc{flex:1}
+.promo-result{font-size:12px;margin-top:4px;font-weight:500}
+.promo-result.ok{color:var(--ok)}.promo-result.err{color:var(--s)}
+
+/* SUMMARY */
+.summary{background:var(--s2);border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px}
+.summary-row{display:flex;justify-content:space-between;padding:3px 0}
+.summary-total{display:flex;justify-content:space-between;padding-top:8px;margin-top:8px;border-top:1px solid var(--bd);font-weight:700;font-size:15px}
+
+/* CONFIRM PAGE */
+.confirm{display:none;max-width:600px;margin:48px auto;padding:0 24px}
+.confirm-card{background:var(--surf);border-radius:16px;overflow:hidden;box-shadow:var(--sh2)}
+.confirm-header{padding:32px;text-align:center;background:linear-gradient(135deg,#34a853,#1e8e3e);color:white}
+.confirm-header .mi{font-size:64px;margin-bottom:12px;display:block}
+.confirm-header h2{font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:6px}
+.confirm-header p{opacity:.85;font-size:15px}
+.confirm-body{padding:28px}
+.confirm-ticket{background:var(--s2);border-radius:12px;padding:24px;text-align:center;margin-bottom:20px}
+.confirm-qr{width:160px;height:160px;background:var(--s3);border-radius:8px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.confirm-qr .mi{font-size:80px;color:var(--tx)}
+.confirm-code{font-family:monospace;font-size:18px;letter-spacing:3px;font-weight:700;margin-bottom:12px}
+.confirm-rows{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.confirm-row{display:flex;align-items:flex-start;gap:10px}
+.confirm-row .mi{font-size:18px;color:var(--p);flex-shrink:0}
+.confirm-pending{background:#fef7e0;border:1px solid var(--w);border-radius:8px;padding:14px;font-size:13px;color:#b06000;margin-bottom:16px;display:flex;gap:8px;align-items:flex-start}
+.confirm-pending .mi{flex-shrink:0}
+
+/* ORG PAGE */
+.org-page{display:none;max-width:1100px;margin:0 auto;padding:32px 24px}
+.org-header{background:var(--surf);border-radius:12px;padding:32px;margin-bottom:28px;display:flex;align-items:center;gap:24px;border:1px solid var(--bd)}
+.org-av{width:80px;height:80px;border-radius:50%;background:var(--p);color:white;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* LOADER */
+.spin{width:24px;height:24px;border:2px solid rgba(26,115,232,.2);border-top-color:var(--p);border-radius:50%;animation:ro .7s linear infinite;flex-shrink:0}
+@keyframes ro{to{transform:rotate(360deg)}}
+.ld{display:flex;align-items:center;justify-content:center;padding:60px;gap:12px;color:var(--tx2);font-size:15px}
+.empty{text-align:center;padding:60px 20px;color:var(--tx2)}
+.empty .mi{font-size:56px;color:var(--tx3);margin-bottom:16px;display:block}
+.empty h3{font-size:20px;font-weight:500;margin-bottom:8px}
+
+/* TOAST */
+.tc{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:9999}
+.toast{display:flex;align-items:center;gap:10px;background:#323232;color:white;padding:12px 16px;border-radius:8px;font-size:14px;min-width:260px;box-shadow:var(--sh2);animation:si .3s ease}
+.toast.ok{background:#137333}.toast.err{background:#c5221f}
+@keyframes si{from{transform:translateX(100%);opacity:0}to{transform:none;opacity:1}}
+
+.divider{height:1px;background:var(--bd);margin:20px 0}
+.fw6{font-weight:600}.fw5{font-weight:500}.tm{color:var(--tx2)}.ts{font-size:12px}
+.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.flb{display:flex;align-items:center;justify-content:space-between}
+.flc{display:flex;align-items:center}
+.g8{gap:8px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showList()">
+      <div class="nav-logo-i"><span class="mi material-icons-round">bolt</span></div>
+      Evolyx Events
+    </a>
+    <div class="nav-search">
+      <span class="mi material-icons-round">search</span>
+      <input type="text" id="nav-search" placeholder="Rechercher un événement..." oninput="debounceSearch(this.value)">
+    </div>
+    <div class="nav-actions">
+      <a href="evolyx-connected.html" class="btn btn-p btn-sm"><span class="mi material-icons-round">dashboard</span>Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<!-- LIST VIEW -->
+<div id="view-list">
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Découvrez des événements<br>près de chez vous</h1>
+    <p>Concerts, conférences, galas, formations et bien plus encore</p>
+    <div class="hero-search">
+      <input type="text" id="hero-search" placeholder="Rechercher par nom, ville, thème...">
+      <button onclick="doSearch()"><span class="mi material-icons-round" style="vertical-align:middle;margin-right:6px">search</span>Rechercher</button>
+    </div>
+    <div class="hero-cities" id="hero-cities">
+      <div class="city-chip" onclick="filterCity('Yaoundé')">📍 Yaoundé</div>
+      <div class="city-chip" onclick="filterCity('Douala')">📍 Douala</div>
+      <div class="city-chip" onclick="filterCity('Bafoussam')">📍 Bafoussam</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="flb" style="margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <h2 class="section-title" style="margin:0" id="list-title">Tous les événements</h2>
+      <div class="filters" id="city-filters" style="margin:0"></div>
+    </div>
+    <div class="eg" id="events-grid">
+      <div class="ld" style="grid-column:1/-1"><div class="spin"></div>Chargement des événements...</div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<!-- DETAIL VIEW -->
+<div id="view-detail" style="display:none">
+  <div class="detail" id="detail-content">
+    <div class="ld"><div class="spin"></div>Chargement...</div>
+  </div>
+</div>
+
+<!-- CONFIRM VIEW -->
+<div id="view-confirm" style="display:none">
+  <div class="confirm" id="confirm-content">
+    <div class="ld"><div class="spin"></div>Chargement...</div>
+  </div>
+</div>
+
+<!-- ORG VIEW -->
+<div id="view-org" style="display:none">
+  <div class="org-page" id="org-content">
+    <div class="ld"><div class="spin"></div>Chargement...</div>
+  </div>
+</div>
+
+<div class="tc" id="tc"></div>
+
+<script>
+const API = 'http://localhost:5000/public';
+let CUR_PAGE = 1;
+let CUR_Q = '';
+let CUR_CITY = '';
+let SEARCH_TIMER = null;
+let SEL_TICKET = null;
+let PROMO_DATA = null;
+
+// ── HTTP ──
+async function get(path) {
+  const r = await fetch(API + path);
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Erreur');
+  return d;
+}
+async function post(path, body) {
+  const r = await fetch(API + path, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'Erreur');
+  return d;
+}
+
+// ── VIEWS ──
+function showView(id) {
+  ['view-list','view-detail','view-confirm','view-org'].forEach(v => {
+    document.getElementById(v).style.display = v===id ? 'block' : 'none';
+  });
+  window.scrollTo(0,0);
+}
+function showList() { showView('view-list'); loadEvents(); }
+
+// ── TOAST ──
+function toast(msg, type='') {
+  const tc = document.getElementById('tc');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = `<span class="mi material-icons-round" style="font-size:18px">${type==='ok'?'check_circle':type==='err'?'error':'info'}</span>${msg}`;
+  tc.appendChild(t);
+  setTimeout(() => { t.style.animation='si .3s reverse'; setTimeout(()=>t.remove(),280); }, 3500);
+}
+
+// ── HELPERS ──
+const COLS = ['linear-gradient(135deg,#1a73e8,#4285f4)','linear-gradient(135deg,#34a853,#1e8e3e)','linear-gradient(135deg,#ea4335,#d93025)','linear-gradient(135deg,#f9ab00,#e37400)','linear-gradient(135deg,#9c27b0,#7b1fa2)','linear-gradient(135deg,#00bcd4,#0097a7)'];
+const ICOS = ['celebration','laptop','rocket_launch','music_note','groups','school','sports_soccer','theater_comedy'];
+function fdate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
+function ftime(d) { if (!d) return '—'; return new Date(d).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}); }
+function fmoney(v, cur='XAF') {
+  const n = parseFloat(v)||0;
+  if (n===0) return 'Gratuit';
+  if (n>=1000) return (n/1000).toFixed(0)+'K '+cur;
+  return n.toLocaleString('fr-FR')+' '+cur;
+}
+function initials(name) { return (name||'?').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase(); }
+
+// ── LOAD CITIES ──
+async function loadCities() {
+  try {
+    const d = await get('/cities');
+    const cities = d.data.cities;
+    document.getElementById('hero-cities').innerHTML = cities.slice(0,5).map(c =>
+      `<div class="city-chip" onclick="filterCity('${c.city}')">📍 ${c.city} <span style="opacity:.7">(${c.event_count})</span></div>`
+    ).join('') || '<div class="city-chip" onclick="filterCity(\'\')">🌍 Tous les pays</div>';
+    // Filtres ville
+    const cf = document.getElementById('city-filters');
+    if (cities.length) {
+      cf.innerHTML = `<div class="filter-chip ${!CUR_CITY?'on':''}" onclick="filterCity('')">Toutes</div>` +
+        cities.slice(0,4).map(c=>`<div class="filter-chip ${CUR_CITY===c.city?'on':''}" onclick="filterCity('${c.city}')">${c.city}</div>`).join('');
+    }
+  } catch(e) {}
+}
+
+// ── LOAD EVENTS ──
+async function loadEvents() {
+  const grid = document.getElementById('events-grid');
+  grid.innerHTML = '<div class="ld" style="grid-column:1/-1"><div class="spin"></div>Chargement...</div>';
+  try {
+    let url = `/events?page=${CUR_PAGE}&limit=9`;
+    if (CUR_Q) url += `&q=${encodeURIComponent(CUR_Q)}`;
+    if (CUR_CITY) url += `&city=${encodeURIComponent(CUR_CITY)}`;
+    const d = await get(url);
+    const { events, pagination } = d.data;
+    renderEvents(events, pagination);
+    document.getElementById('list-title').textContent = CUR_Q
+      ? `Résultats pour "${CUR_Q}" (${pagination.total})`
+      : CUR_CITY ? `Événements à ${CUR_CITY} (${pagination.total})` : `Tous les événements (${pagination.total})`;
+  } catch(e) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="mi material-icons-round">wifi_off</span><h3>Impossible de charger</h3><p>${e.message}</p></div>`;
+  }
+}
+
+function renderEvents(events, pag) {
+  const grid = document.getElementById('events-grid');
+  if (!events.length) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><span class="mi material-icons-round">search_off</span><h3>Aucun événement trouvé</h3><p>Essayez avec d\'autres mots-clés ou une autre ville</p></div>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  grid.innerHTML = events.map((ev, i) => {
+    const isFree = ev.has_free_ticket && parseFloat(ev.min_price||0) === 0;
+    const price = isFree ? 'Gratuit' : ev.min_price ? (parseFloat(ev.min_price)>=1000?(parseFloat(ev.min_price)/1000).toFixed(0)+'K XAF':parseFloat(ev.min_price)+' XAF') + (ev.max_price && ev.max_price !== ev.min_price ? '+' : '') : '—';
+    const full = !ev.has_available_tickets;
+    return `
+    <div class="ec" onclick="showDetail('${ev.slug}')">
+      <div class="ec-cover" style="background:${COLS[i%COLS.length]}">
+        <span class="mi material-icons-round">${ICOS[i%ICOS.length]}</span>
+        ${full ? '<div class="ec-cover-badge"><span class="badge b-full">Complet</span></div>' : isFree ? '<div class="ec-cover-badge"><span class="badge b-free">Gratuit</span></div>' : ''}
+        <div class="ec-cover-price">${price}</div>
+      </div>
+      <div class="ec-body">
+        <div class="ec-title">${ev.title}</div>
+        <div class="ec-meta">
+          <div class="ec-mi"><span class="mi material-icons-round">calendar_today</span>${fdate(ev.start_date)}</div>
+          ${ev.city ? `<div class="ec-mi"><span class="mi material-icons-round">location_on</span>${ev.district?ev.district+' · ':''}${ev.city}</div>` : ''}
+          <div class="ec-mi"><span class="mi material-icons-round">people</span>${ev.registrations_count||0} inscrits</div>
+        </div>
+      </div>
+      <div class="ec-footer">
+        <div class="ec-org">
+          <div class="ec-org-av">${initials(ev.org_name||ev.organizer_name)}</div>
+          <span>${ev.org_name||ev.organizer_name||'—'}</span>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="event.stopPropagation();showDetail('${ev.slug}')">S'inscrire</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pagination
+  const pg = document.getElementById('pagination');
+  if (pag.pages <= 1) { pg.innerHTML=''; return; }
+  let html = `<button class="pg-btn" onclick="changePage(${pag.page-1})" ${pag.page<=1?'disabled':''}><span class="mi material-icons-round">chevron_left</span></button>`;
+  for (let i=1; i<=pag.pages; i++) {
+    if (i===1 || i===pag.pages || Math.abs(i-pag.page)<=1) {
+      html += `<button class="pg-btn ${i===pag.page?'on':''}" onclick="changePage(${i})">${i}</button>`;
+    } else if (Math.abs(i-pag.page)===2) {
+      html += `<button class="pg-btn" disabled>…</button>`;
+    }
+  }
+  html += `<button class="pg-btn" onclick="changePage(${pag.page+1})" ${pag.page>=pag.pages?'disabled':''}><span class="mi material-icons-round">chevron_right</span></button>`;
+  pg.innerHTML = html;
+}
+
+function changePage(p) { CUR_PAGE = p; loadEvents(); }
+function debounceSearch(v) { clearTimeout(SEARCH_TIMER); SEARCH_TIMER = setTimeout(()=>doSearch(v),400); }
+function doSearch(v) {
+  CUR_Q = v || document.getElementById('hero-search').value.trim();
+  document.getElementById('nav-search').value = CUR_Q;
+  CUR_PAGE = 1;
+  showView('view-list');
+  loadEvents();
+}
+function filterCity(city) {
+  CUR_CITY = city; CUR_PAGE = 1;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.toggle('on', c.textContent.trim().startsWith(city||'Toutes')));
+  loadEvents();
+}
+
+// ── DETAIL ──
+async function showDetail(slug) {
+  showView('view-detail');
+  document.getElementById('detail-content').innerHTML = '<div class="ld"><div class="spin"></div>Chargement...</div>';
+  SEL_TICKET = null; PROMO_DATA = null;
+  try {
+    const d = await get(`/events/${slug}`);
+    const { event: ev, ticket_types: tickets } = d.data;
+    renderDetail(ev, tickets, slug);
+  } catch(e) {
+    document.getElementById('detail-content').innerHTML = `<div class="empty"><span class="mi material-icons-round">error</span><h3>${e.message}</h3><button class="btn btn-o" onclick="showList()">← Retour</button></div>`;
+  }
+}
+
+function renderDetail(ev, tickets, slug) {
+  const i = Math.floor(Math.random()*COLS.length);
+  const hasFree = tickets.some(t=>parseFloat(t.price)===0);
+  const minPrice = tickets.length ? Math.min(...tickets.map(t=>parseFloat(t.price))) : 0;
+
+  document.getElementById('detail-content').innerHTML = `
+    <button class="btn btn-o btn-sm" onclick="showList()" style="margin-bottom:16px"><span class="mi material-icons-round">arrow_back</span>Retour</button>
+    <div class="detail-cover" style="background:${COLS[i]}">
+      <span class="mi material-icons-round">${ICOS[i]}</span>
+    </div>
+    <div class="detail-grid">
+      <div>
+        <div class="detail-title">${ev.title}</div>
+        <div class="detail-meta">
+          <div class="detail-mi"><span class="mi material-icons-round">calendar_today</span><div><div class="fw5">${fdate(ev.start_date)}</div><div class="tm ts">${ftime(ev.start_date)} — ${ftime(ev.end_date)}</div></div></div>
+          ${ev.city?`<div class="detail-mi"><span class="mi material-icons-round">location_on</span><div><div class="fw5">${ev.address||ev.city}</div><div class="tm ts">${[ev.district,ev.city,ev.country].filter(Boolean).join(', ')}</div></div></div>`:''}
+          ${ev.location_type==='ONLINE'||ev.location_type==='HYBRID'?`<div class="detail-mi"><span class="mi material-icons-round">videocam</span><div class="fw5">Événement en ligne</div></div>`:''}
+          <div class="detail-mi"><span class="mi material-icons-round">people</span><div><div class="fw5">${ev.confirmed_count||0} inscrits${ev.capacity?' sur '+ev.capacity:''}</div>${ev.capacity?`<div class="tm ts">${Math.round((ev.confirmed_count||0)/ev.capacity*100)}% de remplissage</div>`:''}</div></div>
+        </div>
+        <div class="detail-desc">${ev.description||'Aucune description disponible.'}</div>
+        <div class="detail-org" onclick="showOrg('${ev.org_slug}')">
+          <div class="detail-org-av">${initials(ev.org_name||ev.organizer_name)}</div>
+          <div><div class="fw6">${ev.org_name||ev.organizer_name}</div><div class="tm ts">Organisateur · Voir tous ses événements →</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="bcard">
+          <div class="bcard-header">
+            <h3>${hasFree?'Inscription gratuite':minPrice>0?fmoney(minPrice)+(tickets.length>1?' à partir de':''):''}</h3>
+            <p>Choisissez votre type de billet</p>
+          </div>
+          <div class="bcard-body">
+            <div id="ticket-options">
+              ${tickets.length ? tickets.map(t => {
+                const avail = t.is_available;
+                const remaining = t.remaining;
+                return `<div class="ticket-option ${!avail?'unavailable':''}" id="topt-${t.id}" onclick="${avail?`selTicket('${t.id}',${t.price},'${t.name}')`:''}" data-price="${t.price}" data-name="${t.name}">
+                  <div class="ticket-top">
+                    <span class="ticket-name">${t.name}</span>
+                    <span class="ticket-price ${parseFloat(t.price)===0?'free':''}">${fmoney(t.price)}</span>
+                  </div>
+                  ${t.description?`<div class="ticket-desc">${t.description}</div>`:''}
+                  ${!avail?'<div class="ticket-remaining">Épuisé</div>':remaining!==null&&remaining<10?`<div class="ticket-remaining">⚡ Plus que ${remaining} disponibles</div>`:''}
+                </div>`;
+              }).join('') : '<p class="tm" style="text-align:center;padding:20px">Aucun billet disponible pour le moment</p>'}
+            </div>
+
+            ${tickets.length ? `
+            <div class="divider"></div>
+            <div id="booking-form" style="display:none">
+              <div class="fr2">
+                <div class="fg"><label class="fl">Prénom <span>*</span></label><input type="text" class="fc" id="bf-fn" placeholder="Jean"></div>
+                <div class="fg"><label class="fl">Nom <span>*</span></label><input type="text" class="fc" id="bf-ln" placeholder="Dupont"></div>
+              </div>
+              <div class="fg"><label class="fl">Email <span>*</span></label><input type="email" class="fc" id="bf-em" placeholder="vous@exemple.com"></div>
+              <div class="fg"><label class="fl">Téléphone (WhatsApp)</label><input type="tel" class="fc" id="bf-ph" placeholder="+237 6XX XXX XXX"></div>
+              <div class="fg">
+                <label class="fl">Code promo</label>
+                <div class="promo-row">
+                  <input type="text" class="fc" id="bf-promo" placeholder="EARLY20" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()">
+                  <button class="btn btn-o btn-sm" onclick="applyPromo('${slug}','${ev.id}')">Appliquer</button>
+                </div>
+                <div class="promo-result" id="promo-msg"></div>
+              </div>
+              <div class="summary" id="booking-summary"></div>
+              <button class="btn btn-p" style="width:100%;justify-content:center" id="btn-register" onclick="doRegister('${slug}')">
+                <span class="mi material-icons-round">confirmation_number</span>
+                <span id="btn-register-txt">Confirmer l'inscription</span>
+              </button>
+              <p class="tm ts" style="text-align:center;margin-top:8px">🔒 Vos données sont sécurisées</p>
+            </div>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selTicket(id, price, name) {
+  SEL_TICKET = { id, price: parseFloat(price), name };
+  PROMO_DATA = null;
+  document.getElementById('promo-msg').textContent = '';
+  document.getElementById('bf-promo') && (document.getElementById('bf-promo').value = '');
+  document.querySelectorAll('.ticket-option').forEach(el => el.classList.remove('selected'));
+  document.getElementById('topt-'+id)?.classList.add('selected');
+  document.getElementById('booking-form').style.display = 'block';
+  updateSummary();
+  document.getElementById('bf-fn')?.focus();
+}
+
+function updateSummary() {
+  if (!SEL_TICKET) return;
+  const discount = PROMO_DATA ? PROMO_DATA.discount : 0;
+  const total = Math.max(0, SEL_TICKET.price - discount);
+  document.getElementById('booking-summary').innerHTML = `
+    <div class="summary-row"><span>${SEL_TICKET.name}</span><span>${fmoney(SEL_TICKET.price)}</span></div>
+    ${discount>0?`<div class="summary-row" style="color:var(--ok)"><span>Réduction (${PROMO_DATA.code})</span><span>-${fmoney(discount)}</span></div>`:''}
+    <div class="summary-total"><span>Total</span><span style="color:${total===0?'var(--ok)':'var(--p)'}">${fmoney(total)}</span></div>
+    ${total>0?'<p class="tm ts" style="margin-top:8px;text-align:center">💳 Paiement sécurisé — Bientôt disponible<br>Pour l\'instant, paiement manuel à confirmer</p>':''}
+  `;
+}
+
+async function applyPromo(slug, eventId) {
+  const code = document.getElementById('bf-promo').value.trim();
+  const msg = document.getElementById('promo-msg');
+  if (!code) return;
+  if (!SEL_TICKET) return toast('Sélectionnez un billet d\'abord','err');
+  msg.textContent = 'Vérification...'; msg.className='promo-result';
+  try {
+    const d = await post(`/events/${slug}/verify-promo`, { code, ticket_type_id: SEL_TICKET.id });
+    PROMO_DATA = { code, discount: d.data.discount_amount };
+    msg.textContent = `✓ Code appliqué — -${fmoney(d.data.discount_amount)}`;
+    msg.className = 'promo-result ok';
+    updateSummary();
+  } catch(e) {
+    PROMO_DATA = null;
+    msg.textContent = '✗ ' + e.message;
+    msg.className = 'promo-result err';
+    updateSummary();
+  }
+}
+
+async function doRegister(slug) {
+  const fn = document.getElementById('bf-fn')?.value.trim();
+  const ln = document.getElementById('bf-ln')?.value.trim();
+  const em = document.getElementById('bf-em')?.value.trim();
+  const ph = document.getElementById('bf-ph')?.value.trim();
+  const promo = document.getElementById('bf-promo')?.value.trim();
+  if (!fn||!ln||!em) return toast('Prénom, nom et email sont obligatoires','err');
+  if (!SEL_TICKET) return toast('Sélectionnez un type de billet','err');
+  const btn = document.getElementById('btn-register');
+  const btntxt = document.getElementById('btn-register-txt');
+  btn.disabled = true; btntxt.textContent = 'Inscription en cours...';
+  try {
+    const d = await post(`/events/${slug}/register`, {
+      first_name: fn, last_name: ln, email: em, phone: ph||undefined,
+      ticket_type_id: SEL_TICKET.id,
+      promo_code: promo||undefined,
+    });
+    const reg = d.data.registration;
+    showConfirm(reg, d.data.payment_required);
+  } catch(e) {
+    toast(e.message,'err');
+    btn.disabled=false; btntxt.textContent='Confirmer l\'inscription';
+  }
+}
+
+// ── CONFIRM ──
+function showConfirm(reg, paymentRequired) {
+  showView('view-confirm');
+  document.getElementById('confirm-content').innerHTML = `
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <span class="mi material-icons-round">${paymentRequired?'pending':'check_circle'}</span>
+        <h2>${paymentRequired?'Inscription enregistrée':'Inscription confirmée !'}</h2>
+        <p>${paymentRequired?'Votre place est réservée, en attente de paiement':'Votre billet a été créé avec succès'}</p>
+      </div>
+      <div class="confirm-body">
+        ${paymentRequired?`<div class="confirm-pending"><span class="mi material-icons-round">info</span><div><strong>Paiement en attente</strong><br>Contactez l'organisateur pour finaliser votre paiement. Votre billet sera activé après confirmation.</div></div>`:''}
+        <div class="confirm-ticket">
+          <div class="confirm-qr"><span class="mi material-icons-round">qr_code_2</span></div>
+          <div class="confirm-code">${reg.ticket_code}</div>
+          <div class="fw6" style="font-size:16px;margin-bottom:4px">${reg.first_name} ${reg.last_name}</div>
+          <div class="tm">${reg.ticket_type_name}</div>
+        </div>
+        <div class="confirm-rows">
+          <div class="confirm-row"><span class="mi material-icons-round">event</span><div><div class="fw5">${reg.event_title}</div><div class="tm ts">${fdate(reg.event_start)}</div></div></div>
+          ${reg.event_location?`<div class="confirm-row"><span class="mi material-icons-round">location_on</span><span>${reg.event_location}</span></div>`:''}
+          <div class="confirm-row"><span class="mi material-icons-round">email</span><span>${reg.email}</span></div>
+          <div class="confirm-row"><span class="mi material-icons-round">payments</span><span>${parseFloat(reg.amount_paid)===0?'Gratuit':fmoney(reg.amount_paid)}</span></div>
+        </div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-p" style="flex:1;justify-content:center" onclick="navigator.clipboard.writeText('${reg.ticket_code}');toast('Code copié ✓','ok')"><span class="mi material-icons-round">content_copy</span>Copier le code</button>
+          <button class="btn btn-o" style="flex:1;justify-content:center" onclick="showList()"><span class="mi material-icons-round">home</span>Retour à l'accueil</button>
+        </div>
+        <p class="tm ts" style="text-align:center;margin-top:12px">📧 Confirmation envoyée à ${reg.email} — bientôt disponible</p>
+      </div>
+    </div>
+  `;
+}
+
+async function showConfirmByCode(code) {
+  showView('view-confirm');
+  document.getElementById('confirm-content').innerHTML = '<div class="ld"><div class="spin"></div></div>';
+  try {
+    const d = await get(`/confirm/${code}`);
+    const reg = d.data.registration;
+    document.getElementById('confirm-content').innerHTML = `
+      <div class="confirm-card">
+        <div class="confirm-header" style="background:linear-gradient(135deg,#1a73e8,#0d47a1)">
+          <span class="mi material-icons-round">confirmation_number</span>
+          <h2>Votre billet</h2>
+          <p>${reg.event_title}</p>
+        </div>
+        <div class="confirm-body">
+          <div class="confirm-ticket">
+            <div class="confirm-qr"><span class="mi material-icons-round">qr_code_2</span></div>
+            <div class="confirm-code">${reg.ticket_code}</div>
+            <div class="fw6" style="font-size:16px;margin-bottom:4px">${reg.first_name} ${reg.last_name}</div>
+            <div class="tm">${reg.ticket_type_name}</div>
+          </div>
+          <div class="confirm-rows">
+            <div class="confirm-row"><span class="mi material-icons-round">event</span><div><div class="fw5">${reg.event_title}</div><div class="tm ts">${fdate(reg.start_date)} à ${ftime(reg.start_date)}</div></div></div>
+            ${reg.city?`<div class="confirm-row"><span class="mi material-icons-round">location_on</span><span>${[reg.address,reg.district,reg.city].filter(Boolean).join(', ')}</span></div>`:''}
+            <div class="confirm-row"><span class="mi material-icons-round">badge</span><span>Statut : <strong>${reg.status==='CONFIRMED'||reg.status==='MANUAL'?'✅ Confirmé':'⏳ En attente'}</strong></span></div>
+          </div>
+          <div class="divider"></div>
+          <button class="btn btn-o" style="width:100%;justify-content:center" onclick="showList()"><span class="mi material-icons-round">home</span>Retour à l'accueil</button>
+        </div>
+      </div>
+    `;
+  } catch(e) {
+    document.getElementById('confirm-content').innerHTML = `<div class="empty"><span class="mi material-icons-round">search_off</span><h3>${e.message}</h3><button class="btn btn-o" onclick="showList()">← Retour</button></div>`;
+  }
+}
+
+// ── ORGANIZER ──
+async function showOrg(slug) {
+  if (!slug) return;
+  showView('view-org');
+  document.getElementById('org-content').innerHTML = '<div class="ld"><div class="spin"></div>Chargement...</div>';
+  try {
+    const d = await get(`/organizers/${slug}`);
+    const { organizer: org, events } = d.data;
+    document.getElementById('org-content').innerHTML = `
+      <button class="btn btn-o btn-sm" onclick="showList()" style="margin-bottom:16px"><span class="mi material-icons-round">arrow_back</span>Retour</button>
+      <div class="org-header">
+        <div class="org-av">${initials(org.org_name||org.name)}</div>
+        <div>
+          <h1 style="font-family:var(--fd);font-size:24px;font-weight:700">${org.org_name||org.name}</h1>
+          <p class="tm">${org.name} · ${org.country||'—'}</p>
+          <p class="tm ts" style="margin-top:4px">${events.length} événement(s) à venir</p>
+        </div>
+      </div>
+      <h2 class="section-title">Événements à venir</h2>
+      ${events.length ? `<div class="eg">${events.map((ev,i)=>`
+        <div class="ec" onclick="showDetail('${ev.slug}')">
+          <div class="ec-cover" style="background:${COLS[i%COLS.length]}"><span class="mi material-icons-round">${ICOS[i%ICOS.length]}</span></div>
+          <div class="ec-body">
+            <div class="ec-title">${ev.title}</div>
+            <div class="ec-meta">
+              <div class="ec-mi"><span class="mi material-icons-round">calendar_today</span>${fdate(ev.start_date)}</div>
+              ${ev.city?`<div class="ec-mi"><span class="mi material-icons-round">location_on</span>${ev.city}</div>`:''}
+            </div>
+          </div>
+          <div class="ec-footer">
+            <span class="tm">${ev.has_free_ticket&&parseFloat(ev.min_price||0)===0?'<span class="badge b-free">Gratuit</span>':fmoney(ev.min_price||0)}</span>
+            <button class="btn btn-p btn-sm">S'inscrire</button>
+          </div>
+        </div>`).join('')}</div>`
+      : '<div class="empty"><span class="mi material-icons-round">event_busy</span><h3>Aucun événement à venir</h3></div>'}
+    `;
+  } catch(e) {
+    document.getElementById('org-content').innerHTML = `<div class="empty"><span class="mi material-icons-round">error</span><h3>${e.message}</h3><button class="btn btn-o" onclick="showList()">← Retour</button></div>`;
+  }
+}
+
+// ── URL ROUTING (simple hash) ──
+function handleHash() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) { showList(); return; }
+  if (hash.startsWith('event/')) showDetail(hash.replace('event/',''));
+  else if (hash.startsWith('confirm/')) showConfirmByCode(hash.replace('confirm/',''));
+  else if (hash.startsWith('org/')) showOrg(hash.replace('org/',''));
+  else showList();
+}
+
+// ── INIT ──
+loadCities();
+loadEvents();
+handleHash();
+window.addEventListener('hashchange', handleHash);
+</script>
+</body>
+</html>
